@@ -1,25 +1,44 @@
-<script setup>
-// This starter template is using Vue 3 <script setup> SFCs
-// Check out https://vuejs.org/api/sfc-script-setup.html#script-setup
-import HelloWorld from './components/HelloWorld.vue'
-</script>
-
 <template>
-<div>
-  <HelloWorld></HelloWorld>
+
+
+
+
+<div class="card bg-blue-700">
+  <p class="yellow-700">Hi</p>
+    <div class="flex flex-row flex-wrap card-container blue-container">
+        <div class="flex align-items-center justify-content-center w-4rem h-4rem bg-blue-500 font-bold text-white border-round m-2">1</div>
+        <div class="flex align-items-center justify-content-center w-4rem h-4rem bg-blue-500 font-bold text-white border-round m-2">2</div>
+        <div class="flex align-items-center justify-content-center w-4rem h-4rem bg-blue-500 font-bold text-white border-round m-2">3</div>
+    </div>
 </div>
-<Button label="Primary" />
-<Button label="Secondary" class="p-button-secondary" />
-<Button label="Success" class="p-button-success" />
+
+        <h5>Rounded Buttons</h5>
+        <Button label="Primary" class="p-button-rounded" />
+        <Button label="Secondary" class="p-button-rounded p-button-secondary" />
+        <Button label="Success" class="p-button-rounded p-button-success" />
+        <Button label="Info" class="p-button-rounded p-button-info" />
+        <Button label="Warning" class="p-button-rounded p-button-warning" />
+        <Button label="Help" class="p-button-rounded p-button-help" />
+        <Button label="Danger" class="p-button-rounded p-button-danger" />
+
+
+    <div>
+        <h5>Basic</h5>
+        <ToggleButton v-model="checked1" onIcon="pi pi-check" offIcon="pi pi-times" />
+
+        <h5>Customized</h5>
+        <ToggleButton v-model="checked2" onLabel="I confirm" offLabel="I reject" onIcon="pi pi-check" offIcon="pi pi-times" style="width: 10em" />
+    </div>
+
+
+
 </template>
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-</style>
+
+<script setup>
+import ToggleButton from 'primevue/togglebutton';
+
+</script>
+
+
+
