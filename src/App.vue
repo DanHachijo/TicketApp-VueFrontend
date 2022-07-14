@@ -1,44 +1,89 @@
 <template>
-
-
-
-
-<div class="card bg-blue-700">
-  <p class="yellow-700">Hi</p>
-    <div class="flex flex-row flex-wrap card-container blue-container">
-        <div class="flex align-items-center justify-content-center w-4rem h-4rem bg-blue-500 font-bold text-white border-round m-2">1</div>
-        <div class="flex align-items-center justify-content-center w-4rem h-4rem bg-blue-500 font-bold text-white border-round m-2">2</div>
-        <div class="flex align-items-center justify-content-center w-4rem h-4rem bg-blue-500 font-bold text-white border-round m-2">3</div>
-    </div>
-</div>
-
-        <h5>Rounded Buttons</h5>
-        <Button label="Primary" class="p-button-rounded" />
-        <Button label="Secondary" class="p-button-rounded p-button-secondary" />
-        <Button label="Success" class="p-button-rounded p-button-success" />
-        <Button label="Info" class="p-button-rounded p-button-info" />
-        <Button label="Warning" class="p-button-rounded p-button-warning" />
-        <Button label="Help" class="p-button-rounded p-button-help" />
-        <Button label="Danger" class="p-button-rounded p-button-danger" />
-
-
-    <div>
-        <h5>Basic</h5>
-        <ToggleButton v-model="checked1" onIcon="pi pi-check" offIcon="pi pi-times" />
-
-        <h5>Customized</h5>
-        <ToggleButton v-model="checked2" onLabel="I confirm" offLabel="I reject" onIcon="pi pi-check" offIcon="pi pi-times" style="width: 10em" />
-    </div>
-
-
-
+  <LayoutView ></LayoutView>
 </template>
 
 
 <script setup>
-import ToggleButton from 'primevue/togglebutton';
+import LayoutView from '@/components/layout-ui/LayoutView.vue';
 
 </script>
 
+<style>
+/* Box sizing rules */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* Remove default margin */
+body,
+h1,
+h2,
+h3,
+h4,
+p,
+figure,
+blockquote,
+dl,
+dd {
+  margin: 0;
+}
+
+/* Remove list styles on ul, ol elements with a list role, which suggests default styling will be removed */
+ul[role='list'],
+ol[role='list'] {
+  list-style: none;
+}
+
+/* Set core root defaults */
+html:focus-within {
+  scroll-behavior: smooth;
+}
+
+/* Set core body defaults */
+body {
+  min-height: 100vh;
+  text-rendering: optimizeSpeed;
+  line-height: 1.5;
+}
+
+/* A elements that don't have a class get default styles */
+a:not([class]) {
+  text-decoration-skip-ink: auto;
+}
+
+/* Make images easier to work with */
+img,
+picture {
+  max-width: 100%;
+  display: block;
+}
+
+/* Inherit fonts for inputs and buttons */
+input,
+button,
+textarea,
+select {
+  font: inherit;
+}
+
+/* Remove all animations, transitions and smooth scroll for people that prefer not to see them */
+@media (prefers-reduced-motion: reduce) {
+  html:focus-within {
+   scroll-behavior: auto;
+  }
+  
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+</style>
 
 

@@ -1,0 +1,3 @@
+<template>
+  Project Logs
+</template>
