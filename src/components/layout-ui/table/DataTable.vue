@@ -6,8 +6,9 @@
           :value="data"
           responsiveLayout="scroll"
           stripedRows
-          :resizableColumns="true"
           columnResizeMode="expand"
+          :resizableColumns="true"
+          :lazy="true"
         >
           <!-- Table Title and Buttons -->
           <template #header>
@@ -16,18 +17,19 @@
                 <slot name="header"></slot>
               </span>
               <span class="flex align-items-center">
-                <Button
-                  icon="pi pi-plus"
-                  label="Create New"
-                  class="mx-4 p-button-sm p-button-success"
-                  @click="CreateData"
-                />
+                <OfficeForm ref="refEditForm" mode="create" class="mx-2" />
 
                 <Button
                   icon="pi pi-external-link"
                   label="Export to CSV"
                   class="p-button-sm p-button-info"
                   @click="exportCSV($event)"
+                />
+                <Button
+                  icon="pi pi-replay"
+                  label="Reload"
+                  class="mx-4 p-button-sm p-button-secondary"
+                  @click="reloadTable"
                 />
               </span>
             </span>
@@ -38,21 +40,37 @@
           <slot name="column"></slot>
           <Column :exportable="false" style="min-width: 8rem">
             <template #body="slotProps">
-              <Button
-                type="button"
-                @click="toggle"
-                aria-haspopup="true"
-                aria-controls="overlay_tmenu"
-                class="p-button-sm"
-                icon="pi pi-exclamation-circle"
-                :slotProps="slotProps.data"
-              />
+              <!-- Action Icon -->
 
-              <TieredMenu
-                id="overlay_tmenu"
-                ref="menu"
-                :model="items"
-                :popup="true"
+              <span v-if="!isOptions">
+                <OfficeForm
+                  mode="view"
+                  ref="refViewForm"
+                  :defalutInput="slotProps.data"
+                  class="m-2"
+                />
+
+                <OfficeForm
+                  mode="edit"
+                  ref="refEditForm"
+                  :defalutInput="slotProps.data"
+                  class="m-2"
+                />
+
+                <OfficeForm
+                  mode="erase"
+                  ref="refDeleteForm"
+                  :defalutInput="slotProps.data"
+                  class="m-2"
+                />
+              </span>
+              <ToggleButton
+                class="p-button-sm ml-2"
+                v-model="isOptions"
+                onLabel="Action"
+                offLabel=""
+                onIcon="pi pi-exclamation-circle"
+                offIcon="pi pi-eye-slash"
               />
             </template>
           </Column>
@@ -63,30 +81,20 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
-const props = defineProps(["data"]);
+import { watch, ref, defineAsyncComponent } from "vue";
+import OfficeForm from "@/components/layout-ui/form/member/OfficeForm.vue";
+import { useOfficeStore } from "@/stores/members/office";
+
+// const OfficeForm = defineAsyncComponent(() => import("@/components/layout-ui/form/member/OfficeForm.vue"));
+
+
+const officePinia = useOfficeStore();
+
+const props = defineProps(["data", "reloadTable", "CreateNewBtn"]);
 
 const exportCSV = () => {
   props.data.value.exportCSV();
 };
 
-const menu = ref();
-const items = ref([
-  {
-    label: "View",
-    icon: "pi pi-eye",
-  },
-  {
-    label: "Edit",
-    icon: "pi pi-pencil",
-  },
-  {
-    label: "Delete",
-    icon: "pi pi-trash",
-  },
-]);
-
-const toggle = (event) => {
-  menu.value.toggle(event);
-};
+const isOptions = ref(true);
 </script>

@@ -1,8 +1,11 @@
 <template>
-  <DataTable :data="products">
-    <template #header>
-      OFFICE
-    </template>
+  <DataTable
+    :data="officePinia.data"
+    :key="officePinia.data"
+    :reloadTable="officePinia.getData"
+    :CreateNewBtn="openModal"
+  >
+    <template #header> OFFICE </template>
     <template #column>
       <Column field="name" header="Name" :sortable="true"></Column>
       <Column field="street" header="Street"></Column>
@@ -18,29 +21,10 @@
 <script setup>
 import { ref } from "vue";
 import DataTable from "@/components/layout-ui/table/DataTable.vue";
+import { useOfficeStore } from "@/stores/members/office";
+import OfficeForm from "@/components/layout-ui/form/member/OfficeForm.vue";
 
-const products = ref([
-  {
-    id: "1000",
-    name: "Tokyo Office",
-    street: "123 Main St",
-    suite: "123",
-    city: "Tokyo",
-    state: "Tokyo",
-    zip: "12312",
-    phone: "12312",
-    is_active: true,
-  },
-  {
-    id: "1001",
-    name: "NY Office",
-    street: "123 Main St",
-    suite: "123",
-    city: "New York",
-    state: "New York",
-    zip: "12312",
-    phone: "12312",
-    is_active: true,
-  },
-]);
+const officePinia = useOfficeStore();
+
+
 </script>

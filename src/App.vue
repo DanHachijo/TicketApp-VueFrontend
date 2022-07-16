@@ -1,10 +1,44 @@
 <template>
-  <LayoutView ></LayoutView>
+  <LayoutView></LayoutView>
+
+  <!-- POP UP MESSAGE -->
+  <Toast position="bottom-left" />
+  <Button
+    label="Bottom Left"
+    class="p-button-warning"
+    @click="showSuccess"
+  />
 </template>
 
-
 <script setup>
-import LayoutView from '@/components/layout-ui/LayoutView.vue';
+import LayoutView from "@/components/layout-ui/LayoutView.vue";
+import Toast from "primevue/toast";
+import { useToast } from "primevue/usetoast";
+import { provide } from "vue";
+
+const toast = useToast();
+
+const showSuccess = () => {
+  toast.add({
+    severity: "success",
+    summary: "Success Message",
+    detail: "Message Content",
+    life: 3000,
+  });
+};
+
+const showError = () => {
+  toast.add({
+    severity: "warn",
+    summary: "Warn Message",
+    detail: "Message Content",
+    life: 3000,
+  });
+};
+
+provide('num', 3)
+provide('showSuccess',showSuccess)
+provide('showError',showError)
 
 </script>
 
@@ -31,8 +65,8 @@ dd {
 }
 
 /* Remove list styles on ul, ol elements with a list role, which suggests default styling will be removed */
-ul[role='list'],
-ol[role='list'] {
+ul[role="list"],
+ol[role="list"] {
   list-style: none;
 }
 
@@ -71,9 +105,9 @@ select {
 /* Remove all animations, transitions and smooth scroll for people that prefer not to see them */
 @media (prefers-reduced-motion: reduce) {
   html:focus-within {
-   scroll-behavior: auto;
+    scroll-behavior: auto;
   }
-  
+
   *,
   *::before,
   *::after {
@@ -83,7 +117,4 @@ select {
     scroll-behavior: auto !important;
   }
 }
-
 </style>
-
-
