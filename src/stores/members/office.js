@@ -1,11 +1,11 @@
 import { defineStore } from "pinia";
 import { ref, toRaw, inject } from "vue";
 import EventService from "@/plugins/EventService";
-const showSuccess = inject("showSuccess");
-
 
 export const useOfficeStore = defineStore("office", () => {
   const data = ref(null);
+
+  const createdOffice = ref(0)
   const getData = () => {
     EventService.getOffice()
       .then((response) => {
@@ -19,16 +19,16 @@ export const useOfficeStore = defineStore("office", () => {
   getData();
 
   const updateData = (formState, id) => {
-    EventService.updateOffice(id, toRaw(formState),successMsg, showError)
+    EventService.updateOffice(id, toRaw(formState))
       .then((response) => {
         console.log("Office Updated" + response.data);
         getData();
-        successMsg()
+        createdOffice.value++
+        console.log(createdOffice.value)
       })
       .catch((error) => {
         console.log(error);
         getData();
-        showError()
       });
   };
 

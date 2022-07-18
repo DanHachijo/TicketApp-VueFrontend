@@ -91,16 +91,7 @@ const showSuccess = inject("showSuccess");
 const showError = inject("showError");
 
 const okClick = () => {
-  officePinia.updateData(
-    formState,
-    props.defalutInput.id,
-    showSuccess(),
-    showError()
-  );
-};
-
-const updateData = () => {
-  console.log(formState);
+  officePinia.updateData(formState, props.defalutInput.id);
 };
 
 onMounted(() => {
