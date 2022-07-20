@@ -3,50 +3,18 @@
 
   <!-- POP UP MESSAGE -->
   <Toast position="bottom-left" />
-  <Button label="Bottom Left" class="p-button-warning" @click="showSuccess" />
+  <!-- <Button label="Bottom Left" class="p-button-warning" @click="showSuccess" /> -->
 </template>
 
 <script setup>
 import LayoutView from "@/components/layout-ui/LayoutView.vue";
-import { watch, onMounted } from "vue";
+import { watch, defineExpose } from "vue";
 import Toast from "primevue/toast";
-import { useToast } from "primevue/usetoast";
 import { useOfficeStore } from "@/stores/members/office";
 
-const toast = useToast();
-
-const showSuccess = () => {
-  toast.add({
-    severity: "success",
-    summary: "Success Message",
-    detail: "Message Content",
-    life: 3000,
-  });
-};
-
-const showError = () => {
-  toast.add({
-    severity: "warn",
-    summary: "Error Occurred",
-    detail: "Something went wrong",
-    life: 3000,
-  });
-};
-
-// provide('showSuccess',showSuccess)
-// provide('showError',showError)
-onMounted(() => {
-  const officePinia = useOfficeStore();
-  const officeData = officePinia.createdOffice;
-  console.log(officeData);
-  watch(officeData, (newData, oldData) => {
-    if (newData != oldData) {
-      console.log(officeData.value);
-      showSuccess();
-    }
-  });
-});
 </script>
+
+
 
 <style>
 /* Box sizing rules */

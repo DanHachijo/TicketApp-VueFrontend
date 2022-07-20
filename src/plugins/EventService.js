@@ -84,6 +84,12 @@ export default {
   deleteCompany(id) {
     return apiClient.delete(`company/${id}/`);
   },
+
+
+
+
+
+  
   // Cusomter/Store
   getStore(id) {
     if (id !== undefined) {

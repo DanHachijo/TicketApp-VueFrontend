@@ -25,11 +25,14 @@ import Menu from 'primevue/menu';
 import AutoComplete from 'primevue/autocomplete';
 import InputText from 'primevue/inputtext';
 import Password from 'primevue/password';
+import Textarea from 'primevue/textarea';
 // Modal
 import Dialog from 'primevue/dialog';
 import OverlayPanel from 'primevue/overlaypanel';
 import ToggleButton from 'primevue/togglebutton';
 import ToastService from 'primevue/toastservice';
+import MultiSelect from 'primevue/multiselect';
+import RadioButton from 'primevue/radiobutton';
 
 
 const pinia = createPinia()
@@ -54,7 +57,9 @@ app.component('Password', Password);
 app.component('Dialog', Dialog);
 app.component('OverlayPanel', OverlayPanel);
 app.component('ToggleButton', ToggleButton);
-
+app.component('MultiSelect', MultiSelect);
+app.component('Textarea', Textarea);
+app.component('RadioButton', RadioButton);
 
 app.mount("#app");
 

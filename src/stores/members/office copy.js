@@ -11,6 +11,12 @@ export const useOfficeStore = defineStore("office", () => {
     EventService.getOffice()
       .then((response) => {
         data.value = response.data;
+        toast.add({
+          severity: "success",
+          summary: "Data Loaded",
+          detail: "Office data was successfully loaded",
+          life: 3000,
+        });
       })
       .catch((error) => {
         console.log("data:" + error);
@@ -21,16 +27,6 @@ export const useOfficeStore = defineStore("office", () => {
           life: 3000,
         });
       });
-  };
-
-  const reloadTable = () => {
-    getData();
-    toast.add({
-      severity: "success",
-      summary: "Data Loaded",
-      detail: "Office data was successfully loaded",
-      life: 3000,
-    });
   };
 
   const updateData = (formState, id) => {
@@ -56,11 +52,15 @@ export const useOfficeStore = defineStore("office", () => {
         });
       });
   };
+  
+  const defaultInput = ref(null)
+  const formMode = ref("")
 
   return {
     data,
     getData,
     updateData,
-    reloadTable,
+    defaultInput,
+    formMode
   };
 });

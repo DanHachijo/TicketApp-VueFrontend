@@ -2,10 +2,13 @@
   <DataTable
     :data="officePinia.data"
     :key="officePinia.data"
-    :reloadTable="officePinia.getData"
-    :CreateNewBtn="openModal"
+    :reloadTable="officePinia.reloadTable"
+    @emitCreate="createForm"
+    @emitView="viewForm"
+    @emitEdit="editForm"
+    @emitDelete="deleteForm"
   >
-    <template #header> OFFICE </template>
+    <template #header>OFFICE</template>
     <template #column>
       <Column field="name" header="Name" :sortable="true"></Column>
       <Column field="street" header="Street"></Column>
@@ -16,6 +19,8 @@
       <Column field="phone" header="Phone"></Column>
     </template>
   </DataTable>
+
+  <OfficeForm ref="refForm"/>
 </template>
 
 <script setup>
@@ -25,7 +30,13 @@ import { useOfficeStore } from "@/stores/members/office";
 import OfficeForm from "@/components/layout-ui/form/member/OfficeForm.vue";
 
 const officePinia = useOfficeStore();
+officePinia.getData();
 
+const refForm = ref(null);
+const defaultInput = ref(null);
 
-
+const createForm = (data) => refForm.value.openModal(data, 'create')
+const viewForm = (data) => refForm.value.openModal(data, 'view')
+const editForm = (data) => refForm.value.openModal(data, 'edit')
+const deleteForm = (data) => refForm.value.openModal(data, 'erase')
 </script>

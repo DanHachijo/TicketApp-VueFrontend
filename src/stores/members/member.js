@@ -16,7 +16,6 @@ export const useMemberStore = defineStore('member', ()=> {
         console.log("data:" + error);
       });
   }
-  getData()
 
   return {
     data,
