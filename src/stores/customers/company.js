@@ -86,11 +86,11 @@ export const useCompanyStore = defineStore("company", () => {
   };
   return {
     data,
+    loading,
     getData,
     createData,
     updateData,
     deleteData,
     reloadTable,
-    loading,
   };
 });

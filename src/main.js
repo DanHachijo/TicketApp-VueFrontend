@@ -21,6 +21,8 @@ import ColumnGroup from 'primevue/columngroup';     //optional for column groupi
 import Row from 'primevue/row'; 
 import Card from 'primevue/card';    
 import Menu from 'primevue/menu';
+import Paginator from 'primevue/paginator';
+
 // FORM
 import AutoComplete from 'primevue/autocomplete';
 import InputText from 'primevue/inputtext';
@@ -33,6 +35,9 @@ import ToggleButton from 'primevue/togglebutton';
 import ToastService from 'primevue/toastservice';
 import MultiSelect from 'primevue/multiselect';
 import RadioButton from 'primevue/radiobutton';
+import Badge from 'primevue/badge';
+import Dropdown from 'primevue/dropdown';
+import TriStateCheckbox from 'primevue/tristatecheckbox';
 
 
 const pinia = createPinia()
@@ -60,6 +65,11 @@ app.component('ToggleButton', ToggleButton);
 app.component('MultiSelect', MultiSelect);
 app.component('Textarea', Textarea);
 app.component('RadioButton', RadioButton);
+app.component('Paginator', Paginator);
+app.component('Badge', Badge);
+app.component('Dropdown', Dropdown);
+app.component('TriStateCheckbox', TriStateCheckbox);
+
 
 app.mount("#app");
 

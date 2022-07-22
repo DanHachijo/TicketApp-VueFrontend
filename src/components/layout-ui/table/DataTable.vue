@@ -9,8 +9,8 @@
             responsiveLayout="scroll"
             stripedRows
             columnResizeMode="expand"
+            showGridlines
             :resizableColumns="true"
-            :filters="filters"
             :rowHover="true"
             :loading="officePinia.loading"
             :rows="10"
@@ -18,10 +18,12 @@
             paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
             :rowsPerPageOptions="[10, 25, 50]"
             currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-            
+            v-model:filters="filters"
+            filterDisplay="menu"
           >
-
-
+            <!-- <template #paginatorstart>
+                <Button type="button" icon="pi pi-refresh" class="p-button-text" />
+            </template> -->
             <template #loading> Loading the data. Please wait. </template>
             <!-- Table Title and Buttons -->
             <template #header>
@@ -56,6 +58,7 @@
                       placeholder="Search..."
                     />
                   </span>
+                  <!-- TESTING -->
                 </span>
               </span>
               <!-- END Table Title and Buttons -->
@@ -98,6 +101,18 @@
                 </span>
               </template>
             </Column>
+
+            <!-- <Column field="name" header="Name" :sortable="true">
+              <template #filter="{ filterModel }">
+                {{ filterModel }}
+                <InputText
+                  type="text"
+                  v-model="filterModel.value"
+                  class="p-column-filter"
+                  :placeholder="`Search by name - `"
+                />
+              </template>
+            </Column> -->
             <slot name="column"></slot>
           </DataTable>
         </div>
@@ -110,7 +125,7 @@
 import { ref, reactive } from "vue";
 import OfficeForm from "@/components/layout-ui/form/member/OfficeForm.vue";
 import { useOfficeStore } from "@/stores/members/office";
-import { FilterMatchMode } from "primevue/api";
+import { FilterMatchMode, FilterOperator } from "primevue/api";
 
 const officePinia = useOfficeStore();
 
@@ -119,10 +134,6 @@ const props = defineProps(["data", "reloadTable", "CreateNewBtn"]);
 const exportCSV = () => {
   props.data.value.exportCSV();
 };
-
-const filters = ref({
-  global: { value: null, matchMode: FilterMatchMode.CONTAINS },
-});
 
 const isToggle = reactive({});
 const toggleOption = (id) => {
@@ -135,57 +146,41 @@ const emitCreate = () => emit("emitCreate");
 const emitView = (data) => emit("emitView", data);
 const emitEdit = (data) => emit("emitEdit", data);
 const emitDelete = (data) => emit("emitDelete", data);
+
+const clearFilter = () => {
+  initFilters();
+};
+
+const initFilters = () => {
+  filters.value = {
+    global: { value: "null", matchMode: FilterMatchMode.CONTAINS },
+    name: {
+      operator: FilterOperator.AND,
+      constraints: [{ value: null, matchMode: FilterMatchMode.STARTS_WITH }],
+    },
+    is_customer: { value: null, matchMode: FilterMatchMode.EQUALS },
+  };
+};
+
+// const filters = ref({
+//   global: { value: null, matchMode: FilterMatchMode.CONTAINS },
+//   // 'name': { value: null, matchMode: FilterMatchMode.CONTAINS },
+//   name: {
+//     operator: FilterOperator.AND,
+//     constraints: [{ value: null, matchMode: FilterMatchMode.CONTAINS }],
+//   },
+//   is_customer: { value: null, matchMode: FilterMatchMode.EQUALS },
+// });
+
+const filters = ref({
+  global: { value: null, matchMode: FilterMatchMode.CONTAINS },
+  name: { value: null, matchMode: FilterMatchMode.CONTAINS },
+  is_customer: { value: null, matchMode: FilterMatchMode.EQUALS },
+});
+
+// const filters = ref({
+//   'global': { value: null, matchMode: FilterMatchMode.CONTAINS },
+//   'name': {constraints: [{ value: null, matchMode: FilterMatchMode.STARTS_WITH }],
+//   },
+// });
 </script>
-
-
-<style lang="scss" scoped>
-img {
-    vertical-align: middle;
-}
-::v-deep(.p-paginator) {
-    .p-paginator-current {
-        margin-left: auto;
-    }
-}
-
-::v-deep(.p-progressbar) {
-    height: .5rem;
-    background-color: #D8DADC;
-
-    .p-progressbar-value {
-        background-color: #607D8B;
-    }
-}
-
-::v-deep(.p-datepicker) {
-    min-width: 25rem;
-
-    td {
-        font-weight: 400;
-    }
-}
-
-::v-deep(.p-datatable.p-datatable-customers) {
-    .p-datatable-header {
-        padding: 1rem;
-        text-align: left;
-        font-size: 1.5rem;
-    }
-
-    .p-paginator {
-        padding: 1rem;
-    }
-
-    .p-datatable-thead > tr > th {
-        text-align: left;
-    }
-
-    .p-datatable-tbody > tr > td {
-        cursor: auto;
-    }
-
-    .p-dropdown-label:not(.p-placeholder) {
-        text-transform: uppercase;
-    }
-}
-</style>
