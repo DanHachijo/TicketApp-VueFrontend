@@ -4,7 +4,6 @@ import router from "./router";
 import PrimeVue from 'primevue/config';
 import { createPinia } from 'pinia'
 
-
 // import 'primevue/resources/themes/bootstrap4-light-blue/theme.css'
 // import 'primevue/resources/themes/nova-vue/theme.css'
 import 'primevue/resources/themes/tailwind-light/theme.css'
@@ -12,6 +11,7 @@ import 'primevue/resources/themes/tailwind-light/theme.css'
 import '/node_modules/primeflex/primeflex.css'
 import 'primevue/resources/primevue.min.css'
 import 'primeicons/primeicons.css'
+import '@/assets/styles/global.scss'
 
 import Button from 'primevue/button';
 import TieredMenu from 'primevue/tieredmenu';
@@ -38,6 +38,7 @@ import RadioButton from 'primevue/radiobutton';
 import Badge from 'primevue/badge';
 import Dropdown from 'primevue/dropdown';
 import TriStateCheckbox from 'primevue/tristatecheckbox';
+import SplitButton from 'primevue/splitbutton';
 
 
 const pinia = createPinia()
@@ -69,8 +70,8 @@ app.component('Paginator', Paginator);
 app.component('Badge', Badge);
 app.component('Dropdown', Dropdown);
 app.component('TriStateCheckbox', TriStateCheckbox);
+app.component('SplitButton', SplitButton);
 
 
 app.mount("#app");
-
 

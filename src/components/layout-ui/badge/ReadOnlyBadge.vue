@@ -1,3 +1,3 @@
 <template>
-  Read Only
+  <Badge value="READ ONLY" severity="danger"></Badge>
 </template>

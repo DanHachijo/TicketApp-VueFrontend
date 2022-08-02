@@ -1,17 +1,23 @@
-<template>
-  <LayoutView></LayoutView>
-
-  <!-- POP UP MESSAGE -->
+<template >
+  <!-- <LayoutView ></LayoutView> -->
+  <router-view></router-view>
   <Toast position="bottom-left" />
-  <!-- <Button label="Bottom Left" class="p-button-warning" @click="showSuccess" /> -->
 </template>
 
 <script setup>
-import LayoutView from "@/components/layout-ui/LayoutView.vue";
-import { watch, defineExpose } from "vue";
+// import LayoutView from "@/components/layout-ui/LayoutView.vue";
 import Toast from "primevue/toast";
-import { useOfficeStore } from "@/stores/members/office";
+// import { watch, ref } from "vue";
+// import { useUserStore } from "@/stores/members/user";
+// import router from "./router";
 
+
+// watch(useUserStore().token, ()=>{
+//   console.log("watching token at app.vue")
+//   if( !useUserStore().token.value) {
+//     useUserStore().logOut()
+//   }
+// })
 </script>
 
 

@@ -1,4 +1,8 @@
 import { ref } from "vue";
+// import { useUserStore } from "@/stores/members/user";
+
+
+// const userPinia = useUserStore()
 
 const items = ref([
   {
@@ -110,6 +114,8 @@ const items = ref([
   {
     label: "Log Out",
     icon: "pi pi-fw pi-power-off",
+    to: '/login',
+    // command:userPinia.logOut()
   },
 ]);
 

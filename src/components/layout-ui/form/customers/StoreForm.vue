@@ -9,7 +9,7 @@
       <template #header>
         <span class="flex align-items-start flex-wrap">
           <h2 class="flex justify-content-center">
-            {{ formConfig.formHeader }} Company
+            {{ formConfig.formHeader }} Store
           </h2>
           <ReadOnlyBadge
             v-if="formConfig.isReadyOnly"
@@ -20,6 +20,25 @@
 
       <div class="flex flex-column">
         <h5 class="flex">※Company Name</h5>
+
+        <Dropdown
+          v-model="formState.company"
+          :options="storePinia.companyList"
+          optionLabel="name"
+          optionValue="id"
+          placeholder="Select a Company"
+          :class="inputClass"
+          :disabled="formConfig.isReadyOnly"
+        >
+          <template #option="slotProps">
+            {{ slotProps.option.name }} ({{ slotProps.option.state }})
+          </template>
+        </Dropdown>
+        <p class="invalid-form text-xs" v-show="!formValidation.company.check">
+          {{ formValidation.company.error }}
+        </p>
+
+        <h5 class="flex">※Store Name</h5>
         <InputText
           type="text"
           v-model="formState.name"
@@ -30,10 +49,18 @@
           {{ formValidation.name.error }}
         </p>
 
-        <h5 class="flex">companyID</h5>
+        <h5 class="flex">Japanese Name</h5>
         <InputText
           type="text"
-          v-model="formState.companyID"
+          v-model="formState.japanese_name"
+          :class="inputClass"
+          :readonly="formConfig.isReadyOnly"
+        />
+
+        <h5 class="flex">store ID</h5>
+        <InputText
+          type="text"
+          v-model="formState.storeID"
           :class="inputClass"
           :readonly="formConfig.isReadyOnly"
         />
@@ -74,6 +101,14 @@
         <InputText
           type="text"
           v-model="formState.zipcode"
+          :class="inputClass"
+          :readonly="formConfig.isReadyOnly"
+        />
+
+        <h5 class="flex">Store Phone</h5>
+        <InputText
+          type="text"
+          v-model="formState.phone"
           :class="inputClass"
           :readonly="formConfig.isReadyOnly"
         />
@@ -127,19 +162,21 @@
           <h5 class="flex">Prospect</h5>
           <div class="field-radiobutton">
             <RadioButton
+              id="1"
               :value="true"
               v-model="formState.is_prospect"
               :disabled="formConfig.isReadyOnly"
             />
-            <label for="city1">Prospect</label>
+            <label for="1">Prospect</label>
           </div>
           <div class="field-radiobutton">
             <RadioButton
+              id="2"
               :value="false"
               v-model="formState.is_prospect"
               :disabled="formConfig.isReadyOnly"
             />
-            <label for="city2">No Prospect</label>
+            <label for="2">No Prospect</label>
           </div>
         </span>
       </div>
@@ -157,20 +194,23 @@
           icon="pi pi-check"
           @click="
             closeModal();
-            okClick(formMode, companyPinia);
+            okClick(formMode, storePinia);
           "
           :class="formConfig.okBtnClass"
           :disabled="!formValidation.isValid"
         />
       </template>
+      <button @click="test">test</button>
     </Dialog>
   </span>
 </template>
 
 <script setup>
 import ReadOnlyBadge from "@/components/layout-ui/badge/ReadOnlyBadge.vue";
-import { ref, reactive, computed } from "vue";
+import { ref, reactive, computed, watch } from "vue";
+import { useStoreStore } from "@/stores/customers/store";
 import { useCompanyStore } from "@/stores/customers/company";
+
 import {
   formBreakPoints,
   formWidth,
@@ -180,7 +220,10 @@ import {
   eraseForm,
 } from "@/plugins/GlobalSetting";
 
+const storePinia = useStoreStore();
 const companyPinia = useCompanyStore();
+storePinia.getCompanyList();
+
 const formMode = ref("");
 const defaultInput = ref(null);
 const displayModal = ref(false);
@@ -193,6 +236,7 @@ const openModal = (data, mode) => {
   formMode.value !== "create" ? setForm() : "";
   displayModal.value = true;
 };
+
 const closeModal = () => {
   displayModal.value = false;
 };
@@ -204,7 +248,7 @@ const changeFormMode = () => {
   switch (formMode.value) {
     case "create":
       formConfig.value = createForm;
-      okClick.value = () => companyPinia.createData(formState);
+      okClick.value = () => storePinia.createData(formState);
       break;
     case "view":
       formConfig.value = viewForm;
@@ -212,11 +256,11 @@ const changeFormMode = () => {
     case "edit":
       formConfig.value = editForm;
       okClick.value = () =>
-        companyPinia.updateData(formState, defaultInput.value.id);
+        storePinia.updateData(formState, defaultInput.value.id);
       break;
     case "erase":
       formConfig.value = eraseForm;
-      okClick.value = () => companyPinia.deleteData(defaultInput.value.id);
+      okClick.value = () => storePinia.deleteData(defaultInput.value.id);
       break;
     default:
       console.log("changeFormMode is not getting the formMode.value");
@@ -224,8 +268,11 @@ const changeFormMode = () => {
 };
 
 const initialFormState = {
+  company: null,
   name: "",
-  companyID: "",
+  japanese_name: "",
+  storeID: "",
+  phone: "",
   street: "",
   suite: "",
   city: "",
@@ -236,12 +283,16 @@ const initialFormState = {
   is_active: true,
   is_prospect: false,
 };
+
 const formState = reactive({ ...initialFormState });
 const resetForm = () => Object.assign(formState, initialFormState);
 const setForm = () =>
   Object.assign(formState, {
+    company: defaultInput?.value?.company.id || null,
     name: defaultInput?.value?.name || "",
-    companyID: defaultInput?.value?.companyID || "",
+    japanese_name: defaultInput?.value?.japanese_name || "",
+    storeID: defaultInput?.value?.storeID || "",
+    phone: defaultInput?.value?.phone || "",
     street: defaultInput?.value?.street || "",
     suite: defaultInput?.value?.suite || "",
     city: defaultInput?.value?.city || "",
@@ -253,14 +304,19 @@ const setForm = () =>
     is_prospect: defaultInput?.value?.is_prospect || false,
   });
 
+
 const formValidation = computed(() => {
   return reactive({
+    company: {
+      check: formState.company,
+      error: "Please select a company",
+    },
     name: {
       check: formState.name,
-      error: "Please enter a company name",
+      error: "Please enter a store name",
     },
     get isValid() {
-      return Boolean(this.name.check);
+      return Boolean(this.company.check && this.name.check);
     },
   });
 });
@@ -268,6 +324,12 @@ const formValidation = computed(() => {
 const checkForm = () => {
   Object.values(formValidation.value);
 };
+
+// watch(formValidation, async () => {
+//   Object.values(formValidation).every((val) => val);
+//   isFormValid();
+//   console.log(isFormValid.value);
+// });
 
 const inputClass = "flex align-items-center justify-content-center mb-2";
 

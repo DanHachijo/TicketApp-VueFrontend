@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 import { ref, toRaw } from "vue";
-import EventService from "@/plugins/EventService";
+import { getOffice, updateOffice } from "@/plugins/EventService";
 import { useToast } from "primevue/usetoast";
 
 export const useOfficeStore = defineStore("office", () => {
@@ -8,7 +8,7 @@ export const useOfficeStore = defineStore("office", () => {
   const data = ref(null);
 
   const getData = () => {
-    EventService.getOffice()
+    getOffice()
       .then((response) => {
         data.value = response.data;
       })
@@ -34,7 +34,7 @@ export const useOfficeStore = defineStore("office", () => {
   };
 
   const updateData = (formState, id) => {
-    EventService.updateOffice(id, toRaw(formState))
+    updateOffice(id, toRaw(formState))
       .then((response) => {
         console.log("Office Updated" + response.data);
         getData();

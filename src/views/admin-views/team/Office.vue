@@ -1,5 +1,5 @@
 <template>
-  <DataTable
+  <GlobalDataTable
     :data="officePinia.data"
     :key="officePinia.data"
     :reloadTable="officePinia.reloadTable"
@@ -18,14 +18,14 @@
       <Column field="zip" header="Zip"></Column>
       <Column field="phone" header="Phone"></Column>
     </template>
-  </DataTable>
+  </GlobalDataTable>
 
   <OfficeForm ref="refForm"/>
 </template>
 
 <script setup>
 import { ref } from "vue";
-import DataTable from "@/components/layout-ui/table/DataTable.vue";
+import GlobalDataTable from "@/components/layout-ui/table/GlobalDataTable.vue";
 import { useOfficeStore } from "@/stores/members/office";
 import OfficeForm from "@/components/layout-ui/form/member/OfficeForm.vue";
 

@@ -1,5 +1,5 @@
 <template>
-  <DataTable :data="memberPinia.data" :reloadTable="memberPinia.getData">
+  <GlobalDataTable :data="memberPinia.data" :reloadTable="memberPinia.getData">
     <template #header>
       MEMBERS
     </template>
@@ -12,13 +12,13 @@
       <Column field="title" header="Title"></Column>
       <Column field="phone" header="Phone"></Column>
     </template>
-  </DataTable>
+  </GlobalDataTable>
 
 </template>
 
 <script setup>
 import { ref } from "vue";
-import DataTable from "@/components/layout-ui/table/DataTable.vue";
+import GlobalDataTable from "@/components/layout-ui/table/GlobalDataTable.vue";
 import { useMemberStore } from '@/stores/members/member'
 
 const memberPinia = useMemberStore()

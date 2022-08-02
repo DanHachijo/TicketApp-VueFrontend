@@ -1,14 +1,15 @@
 import { defineStore } from "pinia";
 import { ref, toRaw } from "vue";
 import {
-  getCompany,
-  updateCompany,
-  createCompany,
-  deleteCompany,
+  getStore,
+  updateStore,
+  createStore,
+  deleteStore,
+  getCompanyListEvent,
 } from "@/plugins/EventService";
 import { useToast } from "primevue/usetoast";
 
-export const useCompanyStore = defineStore("company", () => {
+export const useStoreStore = defineStore("store", () => {
   const toast = useToast();
   const data = ref(null);
   const loading = ref(true);
@@ -18,7 +19,7 @@ export const useCompanyStore = defineStore("company", () => {
     toast.add({
       severity: "success",
       summary: "Data Updated",
-      detail: `Company data was successfully ${msg}.`,
+      detail: `Store data was successfully ${msg}.`,
       life: 3000,
     });
   };
@@ -33,7 +34,7 @@ export const useCompanyStore = defineStore("company", () => {
   };
 
   const getData = () => {
-    getCompany()
+    getStore()
       .then((response) => {
         data.value = response.data;
       })
@@ -50,48 +51,54 @@ export const useCompanyStore = defineStore("company", () => {
   };
 
   const updateData = (formState, id) => {
-    updateCompany(id, toRaw(formState))
+    updateStore(id, toRaw(formState))
       .then((response) => {
-        console.log("Company Updated" + response.data);
+        console.log("Store Updated" + response.data);
         getData();
         toastSuccess("updated");
       })
       .catch((error) => {
-        console.log(error);
         getData();
         toastError(error);
       });
   };
 
   const createData = (formState) => {
-    createCompany(toRaw(formState))
+    createStore(toRaw(formState))
       .then((response) => {
-        console.log("Company Updated" + response.data);
+        console.log("Store Created" + response.data);
         getData();
         toastSuccess("created");
       })
       .catch((error) => {
-        console.log(error);
         getData();
         toastError(error);
       });
   };
 
   const deleteData = (id) => {
-    deleteCompany(id)
+    deleteStore(id)
       .then((response) => {
-        console.log("Company Updated" + response.data);
+        console.log("Company Deleted" + response.data);
         getData();
         toastSuccess("deleted");
       })
       .catch((error) => {
-        console.log(error);
         getData();
         toastError(error);
       });
   };
 
-
+  const getCompanyList = () => {
+    getCompanyListEvent()
+      .then((response) => {
+        companyList.value = response.data;
+      })
+      .catch((error) => {
+        console.log("companyList:" + error);
+      });
+    loading.value = true;
+  };
   return {
     data,
     loading,
@@ -100,8 +107,7 @@ export const useCompanyStore = defineStore("company", () => {
     updateData,
     deleteData,
     reloadTable,
-    toastSuccess,
-    toastError,
+    getCompanyList,
     companyList,
   };
 });

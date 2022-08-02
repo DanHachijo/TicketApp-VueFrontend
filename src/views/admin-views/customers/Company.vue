@@ -1,6 +1,5 @@
 <template>
-  <DataTable
-    v-if="DataTable"
+  <GlobalDataTable
     :data="companyPinia.data"
     :reloadTable="companyPinia.reloadTable"
     :key="companyPinia.data"
@@ -8,12 +7,11 @@
     @emitView="viewForm"
     @emitEdit="editForm"
     @emitDelete="deleteForm"
+    tableName="company"
   >
-    <template #header> COMPANY </template>
     <template #column>
       <Column field="name" header="Name" :sortable="true">
         <template #filter="{ filterModel }">
-        {{filterModel}}
           <InputText
             type="text"
             v-model="filterModel.value"
@@ -21,7 +19,6 @@
             :placeholder="`Search by name - `"
           />
         </template>
-
       </Column>
       <Column field="companyID" header="CompanyID" :sortable="true"></Column>
       <Column field="street" header="Street"></Column>
@@ -50,39 +47,68 @@
         </template>
 
         <template #filter="{ filterModel }">
-          <TriStateCheckbox v-model="filterModel.value" />
+          <div class="field-radiobutton">
+            <RadioButton id="1" value="true" v-model="filterModel.value" />
+            <label for="1">In Contract</label>
+          </div>
+          <div class="field-radiobutton">
+            <RadioButton id="2" value="false" v-model="filterModel.value" />
+            <label for="2">No Contract</label>
+          </div>
         </template>
       </Column>
-      <Column field="is_prospect" header="Prospect" :sortable="true">
+
+      <Column field="is_prospect" header="Prospect" :sortable="true" dataType="boolean">
         <template #body="{ data }">
           <Badge v-if="data.is_prospect" value="Target" severity="warning" />
           <Badge v-else value="Not Prospect" severity="success" />
         </template>
+
+        <template #filter="{ filterModel }">
+          <div class="field-radiobutton">
+            <RadioButton id="1" value="true" v-model="filterModel.value" />
+            <label for="1">Prospect</label>
+          </div>
+          <div class="field-radiobutton">
+            <RadioButton id="2" value="false" v-model="filterModel.value" />
+            <label for="2">Not Prospect</label>
+          </div>
+        </template>
       </Column>
-      <Column field="is_active" header="Status" :sortable="true">
+      <Column field="is_active" header="Status" :sortable="true" dataType="boolean">
         <template #body="{ data }">
           <Badge
             v-if="data.is_active"
             value="In Operation"
             severity="success"
           />
-          <Badge v-else value="Closed" severity="danger" />
+          <Badge v-else value="Closed Permanently" severity="danger" />
+        </template>
+
+        <template #filter="{ filterModel }">
+          <div class="field-radiobutton">
+            <RadioButton id="1" value="true" v-model="filterModel.value" />
+            <label for="1">In Operation</label>
+          </div>
+          <div class="field-radiobutton">
+            <RadioButton id="2" value="false" v-model="filterModel.value" />
+            <label for="2">Closed Permanently</label>
+          </div>
         </template>
       </Column>
-      <Column field="date" header="Last Updated" :sortable="true"> </Column>
+      <Column field="date" header="Added Date" :sortable="true"></Column>
     </template>
-  </DataTable>
+  </GlobalDataTable>
 
   <CompanyForm ref="refForm" />
 </template>
 
 <script setup>
 import { ref } from "vue";
-import DataTable from "@/components/layout-ui/table/DataTable.vue";
+import GlobalDataTable from "@/components/layout-ui/table/GlobalDataTable.vue";
 import { useCompanyStore } from "@/stores/customers/company";
 import CompanyForm from "@/components/layout-ui/form/customers/CompanyForm.vue";
 import { showElipsis } from "@/plugins/GlobalSetting";
-// import { FilterMatchMode, FilterOperator } from "primevue/api";
 
 const companyPinia = useCompanyStore();
 companyPinia.getData();
@@ -94,8 +120,4 @@ const createForm = (data) => refForm.value.openModal(data, "create");
 const viewForm = (data) => refForm.value.openModal(data, "view");
 const editForm = (data) => refForm.value.openModal(data, "edit");
 const deleteForm = (data) => refForm.value.openModal(data, "erase");
-
-const hi = (demo) => {
-  console.log(demo)
-}
 </script>
