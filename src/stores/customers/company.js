@@ -49,11 +49,12 @@ export const useCompanyStore = defineStore("company", () => {
     toastSuccess("loaded");
   };
 
-  const updateData = (formState, id) => {
+  const updateData = (formState, id, closeModal) => {
     updateCompany(id, toRaw(formState))
       .then((response) => {
         console.log("Company Updated" + response.data);
         getData();
+        closeModal()
         toastSuccess("updated");
       })
       .catch((error) => {
@@ -63,11 +64,12 @@ export const useCompanyStore = defineStore("company", () => {
       });
   };
 
-  const createData = (formState) => {
+  const createData = (formState, closeModal) => {
     createCompany(toRaw(formState))
       .then((response) => {
         console.log("Company Updated" + response.data);
         getData();
+        closeModal()
         toastSuccess("created");
       })
       .catch((error) => {
@@ -77,11 +79,12 @@ export const useCompanyStore = defineStore("company", () => {
       });
   };
 
-  const deleteData = (id) => {
+  const deleteData = (id, closeModal) => {
     deleteCompany(id)
       .then((response) => {
         console.log("Company Updated" + response.data);
         getData();
+        closeModal()
         toastSuccess("deleted");
       })
       .catch((error) => {

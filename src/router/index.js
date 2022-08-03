@@ -18,7 +18,7 @@ import Members from '@/views/admin-views/team/Members.vue'
 // Tech
 import Foodit from '@/views/admin-views/tech/Foodit.vue'
 import Manual from '@/views/admin-views/tech/Manual.vue'
-import SupportLogs from '@/views/admin-views/tech/SupportLogs.vue'
+import Ticket from '@/views/admin-views/tech/Ticket.vue'
 import SystemGuide from '@/views/admin-views/tech/SystemGuide.vue'
 import TeamViewer from '@/views/admin-views/tech/TeamViewer.vue'
 // Login
@@ -114,9 +114,9 @@ const routes = [
         meta: { requiresAuth: true },
       },
       {
-        path: '/support-logs',
-        name: 'SupportLogs',
-        component: SupportLogs,
+        path: '/ticket',
+        name: 'Ticket',
+        component: Ticket,
         meta: { requiresAuth: true },
       },
       {
@@ -197,8 +197,8 @@ const routes = [
 //   },
 //   {
 //     path: '/support-logs',
-//     name: 'SupportLogs',
-//     component: SupportLogs
+//     name: 'Ticket',
+//     component: Ticket
 //   },
 //   {
 //     path: '/system-guide',

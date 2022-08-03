@@ -7,13 +7,13 @@
       :modal="true"
     >
       <template #header>
-        <span class="flex align-items-start flex-wrap">
-          <h2 class="flex justify-content-center">
+        <span class="flex">
+          <h2 class="">
             {{ formConfig.formHeader }} Store
           </h2>
           <ReadOnlyBadge
             v-if="formConfig.isReadyOnly"
-            class="ml-4 flex justify-content-center"
+            class="ml-3"
           />
         </span>
       </template>
@@ -31,7 +31,13 @@
           :disabled="formConfig.isReadyOnly"
         >
           <template #option="slotProps">
-            {{ slotProps.option.name }} ({{ slotProps.option.state }})
+            {{ slotProps.option.name }}
+            <Badge
+              v-if="slotProps.option?.state"
+              :value="slotProps.option?.state"
+              severity="info"
+              class="m-2"
+            ></Badge>
           </template>
         </Dropdown>
         <p class="invalid-form text-xs" v-show="!formValidation.company.check">
@@ -192,10 +198,7 @@
           v-if="formConfig.okBtn"
           :label="formConfig.okBtn"
           icon="pi pi-check"
-          @click="
-            closeModal();
-            okClick(formMode, storePinia);
-          "
+          @click="okClick(formMode, storePinia)"
           :class="formConfig.okBtnClass"
           :disabled="!formValidation.isValid"
         />
@@ -209,7 +212,7 @@
 import ReadOnlyBadge from "@/components/layout-ui/badge/ReadOnlyBadge.vue";
 import { ref, reactive, computed, watch } from "vue";
 import { useStoreStore } from "@/stores/customers/store";
-import { useCompanyStore } from "@/stores/customers/company";
+// import { useCompanyStore } from "@/stores/customers/company";
 
 import {
   formBreakPoints,
@@ -221,8 +224,8 @@ import {
 } from "@/plugins/GlobalSetting";
 
 const storePinia = useStoreStore();
-const companyPinia = useCompanyStore();
-storePinia.getCompanyList();
+// const companyPinia = useCompanyStore();
+// storePinia.getCompanyList();
 
 const formMode = ref("");
 const defaultInput = ref(null);
@@ -248,7 +251,7 @@ const changeFormMode = () => {
   switch (formMode.value) {
     case "create":
       formConfig.value = createForm;
-      okClick.value = () => storePinia.createData(formState);
+      okClick.value = () => storePinia.createData(formState, closeModal);
       break;
     case "view":
       formConfig.value = viewForm;
@@ -256,11 +259,12 @@ const changeFormMode = () => {
     case "edit":
       formConfig.value = editForm;
       okClick.value = () =>
-        storePinia.updateData(formState, defaultInput.value.id);
+        storePinia.updateData(formState, defaultInput.value.id, closeModal);
       break;
     case "erase":
       formConfig.value = eraseForm;
-      okClick.value = () => storePinia.deleteData(defaultInput.value.id);
+      okClick.value = () =>
+        storePinia.deleteData(defaultInput.value.id, closeModal);
       break;
     default:
       console.log("changeFormMode is not getting the formMode.value");
@@ -304,7 +308,6 @@ const setForm = () =>
     is_prospect: defaultInput?.value?.is_prospect || false,
   });
 
-
 const formValidation = computed(() => {
   return reactive({
     company: {
@@ -320,10 +323,6 @@ const formValidation = computed(() => {
     },
   });
 });
-
-const checkForm = () => {
-  Object.values(formValidation.value);
-};
 
 // watch(formValidation, async () => {
 //   Object.values(formValidation).every((val) => val);

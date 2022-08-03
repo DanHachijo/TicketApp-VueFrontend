@@ -31,12 +31,25 @@ const eraseForm = {
 const formBreakPoints = { '960px': '75vw', '640px': '90vw' }
 const formWidth = { width: '50vw' }
 // Table
-const showElipsis = (str = "") => {
-  if (str) {
-    str.length >= 10 ? str.substring(0, 9) + "..." : str 
+const showElipsis = (str) => {
+  if (str.length >= 10) {
+    return str.substring(0, 9) + "..." 
+  } else {
+    return str
   }
 }
 
+const padTo2Digits = (num) => {
+  return num.toString().padStart(2, '0');
+}
+
+const formatDate = (date) => {
+  return [
+    padTo2Digits(date.getMonth() + 1),
+    padTo2Digits(date.getDate()),
+    date.getFullYear(),
+  ].join('/');
+}
 
 
 export { 
@@ -47,4 +60,5 @@ export {
   eraseForm,
   formBreakPoints,
   formWidth,
+  formatDate,
 };

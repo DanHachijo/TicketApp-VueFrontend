@@ -45,14 +45,7 @@ export const submitLoginEvent = (logininfo) => {
   return loginClient.post("api-token-auth/", logininfo);
 };
 
-// Ticekts
-export const getTickets = (id) => {
-  if (id !== undefined) {
-    return apiClient().get(`tickets/?store__id=${id}`);
-  } else {
-    return apiClient().get("tickets/");
-  }
-};
+
 
 // MEMBERS
 export const getMember = () => {
@@ -63,6 +56,16 @@ export const getOffice = () => {
 };
 export const updateOffice = (id, data) => {
   return apiClient().patch(`office/${id}/`, data);
+};
+
+
+// Ticekts
+export const getTickets = (id) => {
+  if (id !== undefined) {
+    return apiClient().get(`tickets/?store__id=${id}`);
+  } else {
+    return apiClient().get("tickets/");
+  }
 };
 
 export const createTicket = (data) => {
@@ -115,6 +118,10 @@ export const updateStore = (id, data) => {
 };
 export const deleteStore = (id) => {
   return apiClient().delete(`store/${id}/`);
+};
+
+export const getStoreListEvent = () => {
+  return apiClient().get("store-list/");
 };
 
 export const getCompanyListEvent = () => {

@@ -22,6 +22,7 @@ import Row from 'primevue/row';
 import Card from 'primevue/card';    
 import Menu from 'primevue/menu';
 import Paginator from 'primevue/paginator';
+import ProgressSpinner from 'primevue/progressspinner';
 
 // FORM
 import AutoComplete from 'primevue/autocomplete';
@@ -39,6 +40,8 @@ import Badge from 'primevue/badge';
 import Dropdown from 'primevue/dropdown';
 import TriStateCheckbox from 'primevue/tristatecheckbox';
 import SplitButton from 'primevue/splitbutton';
+import SelectButton from 'primevue/selectbutton';
+import Calendar from 'primevue/calendar';
 
 
 const pinia = createPinia()
@@ -71,6 +74,9 @@ app.component('Badge', Badge);
 app.component('Dropdown', Dropdown);
 app.component('TriStateCheckbox', TriStateCheckbox);
 app.component('SplitButton', SplitButton);
+app.component('SelectButton', SelectButton);
+app.component('ProgressSpinner', ProgressSpinner);
+app.component('Calendar', Calendar);
 
 
 app.mount("#app");

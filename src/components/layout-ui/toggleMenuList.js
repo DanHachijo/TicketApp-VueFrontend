@@ -39,8 +39,8 @@ const items = ref([
     icon: "pi pi-fw pi-database",
     items: [
       {
-        label: "Support Logs",
-        to: '/support-logs',
+        label: "Tickets",
+        to: '/ticket',
       },
       {
         label: "System Guide",

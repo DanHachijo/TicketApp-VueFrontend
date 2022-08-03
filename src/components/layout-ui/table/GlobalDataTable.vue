@@ -6,6 +6,7 @@
           <DataTable
             :value="data"
             dataKey="data.id"
+            :loading="loading"
             responsiveLayout="scroll"
             stripedRows
             columnResizeMode="expand"
@@ -20,7 +21,6 @@
             v-model:filters="filters"
             filterDisplay="menu"
           >
-            <template #loading> Loading the data. Please wait. </template>
             <!-- Table Title and Buttons -->
             <template #header>
               <span class="flex justify-content-between flex-wrap">
@@ -58,6 +58,14 @@
               <!-- END Table Title and Buttons -->
             </template>
             <!-- Table Culumn and Edit Buttons -->
+            <template #loading>
+              <ProgressSpinner
+                style="width: 50px; height: 50px"
+                strokeWidth="8"
+                fill="var(--surface-ground)"
+                animationDuration=".5s"
+              />
+            </template>
 
             <Column
               :exportable="false"
@@ -67,7 +75,10 @@
               <template #body="slotProps" class="flex">
                 <ToggleButton
                   class="p-button-sm m-2 flex"
-                  @click="resetToggle([slotProps.data.id]);toggleOption[slotProps.data.id]"
+                  @click="
+                    resetToggle([slotProps.data.id]);
+                    toggleOption[slotProps.data.id];
+                  "
                   v-model="isToggle[slotProps.data.id]"
                   onIcon="pi pi-eye-slash"
                   offIcon="pi pi-exclamation-circle"
@@ -118,14 +129,20 @@
 </template>
 
 <script setup>
-import { ref, reactive } from "vue";
+import { ref, reactive, computed } from "vue";
 import { FilterMatchMode, FilterOperator } from "primevue/api";
 
 const props = defineProps(["data", "reloadTable", "tableName"]);
 
+const loading = computed(() => {
+  return props.data ? false : true;
+});
+
+
 const exportCSV = () => {
-  props.data.value.exportCSV();
+  props.data.exportCSV();
 };
+
 const isToggle = reactive({});
 
 const resetToggle = (id) => {
@@ -137,7 +154,6 @@ const resetToggle = (id) => {
 };
 
 const toggleOption = (id) => {
-  
   isToggle[id] = !isToggle[id];
 };
 
@@ -187,6 +203,10 @@ const companyFilters = {
 
 const storeFilters = {
   global: { value: null, matchMode: FilterMatchMode.CONTAINS },
+  "company.name": {
+    operator: FilterOperator.OR,
+    constraints: [{ value: null, matchMode: FilterMatchMode.CONTAINS }],
+  },
   name: {
     operator: FilterOperator.OR,
     constraints: [{ value: null, matchMode: FilterMatchMode.CONTAINS }],
@@ -196,11 +216,36 @@ const storeFilters = {
   is_active: { value: "true", matchMode: FilterMatchMode.EQUALS },
 };
 
-props.tableName == "company"
+const contactFilters = {
+  global: { value: null, matchMode: FilterMatchMode.CONTAINS },
+  "company.name": {
+    operator: FilterOperator.OR,
+    constraints: [{ value: null, matchMode: FilterMatchMode.CONTAINS }],
+  },
+  "store.name": {
+    operator: FilterOperator.OR,
+    constraints: [{ value: null, matchMode: FilterMatchMode.CONTAINS }],
+  },
+  contact: {
+    operator: FilterOperator.OR,
+    constraints: [{ value: null, matchMode: FilterMatchMode.CONTAINS }],
+  },
+};
+
+const ticketFilters = {
+  global: { value: null, matchMode: FilterMatchMode.CONTAINS },
+  ticket_date: {value: null, matchMode: FilterMatchMode.BETWEEN},
+};
+
+props.tableName.toLowerCase() == "company"
   ? (filters.value = companyFilters)
-  : props.tableName == "store"
+  : props.tableName.toLowerCase() == "store"
   ? (filters.value = storeFilters)
-  : "";
+  : props.tableName.toLowerCase() == "contact"
+  ? (filters.value = contactFilters)
+  : props.tableName.toLowerCase() == "ticket"
+  ? (filters.value = ticketFilters)
+  : console.log("Please Add the table filter in GlobalDataTable.vue");
 </script>
 
 <style>

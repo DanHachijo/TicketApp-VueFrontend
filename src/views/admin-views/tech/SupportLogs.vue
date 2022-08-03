@@ -1,3 +1,0 @@
-<template>
-  SuportLogs
-</template>

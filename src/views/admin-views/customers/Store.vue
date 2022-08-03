@@ -11,8 +11,6 @@
   >
     <template #column>
       <Column field="company.name" header="Company Name" :sortable="true">
-
-
         <template #filter="{ filterModel }">
           <InputText
             type="text"
