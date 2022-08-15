@@ -8,26 +8,19 @@
     >
       <template #header>
         <span class="flex">
-          <h2 class="">
-            {{ formConfig.formHeader }} Store
-          </h2>
-          <ReadOnlyBadge
-            v-if="formConfig.isReadyOnly"
-            class="ml-3"
-          />
+          <h2 class="">{{ formConfig.formHeader }} Store</h2>
+          <ReadOnlyBadge v-if="formConfig.isReadyOnly" />
         </span>
       </template>
 
       <div class="flex flex-column">
-        <h5 class="flex">※Company Name</h5>
-
+        <label :class="formLabelClass">※Company Name</label>
         <Dropdown
           v-model="formState.company"
-          :options="storePinia.companyList"
+          :options="companyPinia.companyList"
           optionLabel="name"
           optionValue="id"
           placeholder="Select a Company"
-          :class="inputClass"
           :disabled="formConfig.isReadyOnly"
         >
           <template #option="slotProps">
@@ -44,91 +37,92 @@
           {{ formValidation.company.error }}
         </p>
 
-        <h5 class="flex">※Store Name</h5>
+        <label :class="formLabelClass">※Store Name</label>
+
         <InputText
           type="text"
           v-model="formState.name"
-          :class="inputClass"
           :readonly="formConfig.isReadyOnly"
         />
         <p class="invalid-form text-xs" v-show="!formValidation.name.check">
           {{ formValidation.name.error }}
         </p>
 
-        <h5 class="flex">Japanese Name</h5>
+        <label :class="formLabelClass">Japanese Name</label>
+
         <InputText
           type="text"
           v-model="formState.japanese_name"
-          :class="inputClass"
           :readonly="formConfig.isReadyOnly"
         />
 
-        <h5 class="flex">store ID</h5>
+        <label :class="formLabelClass">store ID</label>
+
         <InputText
           type="text"
           v-model="formState.storeID"
-          :class="inputClass"
           :readonly="formConfig.isReadyOnly"
         />
 
-        <h5 class="flex">Street</h5>
+        <label :class="formLabelClass">Street</label>
+
         <InputText
           type="text"
           v-model="formState.street"
-          :class="inputClass"
           :readonly="formConfig.isReadyOnly"
         />
 
-        <h5 class="flex">Suite</h5>
+        <label :class="formLabelClass">Suite</label>
+
         <InputText
           type="text"
           v-model="formState.suite"
-          :class="inputClass"
           :readonly="formConfig.isReadyOnly"
         />
 
-        <h5 class="flex">City</h5>
+        <label :class="formLabelClass">City</label>
+
         <InputText
           type="text"
           v-model="formState.city"
-          :class="inputClass"
           :readonly="formConfig.isReadyOnly"
         />
 
-        <h5 class="flex">State</h5>
+        <label :class="formLabelClass">State</label>
+
         <InputText
           type="text"
           v-model="formState.state"
-          :class="inputClass"
           :readonly="formConfig.isReadyOnly"
         />
 
-        <h5 class="flex">Zip</h5>
+        <label :class="formLabelClass">Zip</label>
+
         <InputText
           type="text"
           v-model="formState.zipcode"
-          :class="inputClass"
           :readonly="formConfig.isReadyOnly"
         />
 
-        <h5 class="flex">Store Phone</h5>
+        <label :class="formLabelClass">Store Phone</label>
+
         <InputText
           type="text"
           v-model="formState.phone"
-          :class="inputClass"
           :readonly="formConfig.isReadyOnly"
         />
 
-        <h5 class="flex">Note</h5>
+        <label :class="formLabelClass">Note</label>
+
         <Textarea
           rows="5"
           cols="30"
           v-model="formState.memo"
-          :class="inputClass"
           :readonly="formConfig.isReadyOnly"
         />
 
-        <h5 class="flex">Contract</h5>
+        <label :class="formLabelClass">Contract</label>
+
         <div class="field-radiobutton" :readonly="formConfig.isReadyOnly">
           <RadioButton
             :value="true"
@@ -146,7 +140,8 @@
           <label for="city2">Not Customer</label>
         </div>
 
-        <h5 class="flex">Status</h5>
+        <label :class="formLabelClass">Status</label>
+
         <div class="field-radiobutton">
           <RadioButton
             :value="true"
@@ -164,8 +159,12 @@
           <label for="city2">Closed Permanently</label>
         </div>
 
+        <label
+          v-if="!formState.is_customer && formState.is_active"
+          :class="formLabelClass"
+          >Prospect</label
+        >
         <span v-if="!formState.is_customer && formState.is_active">
-          <h5 class="flex">Prospect</h5>
           <div class="field-radiobutton">
             <RadioButton
               id="1"
@@ -203,7 +202,6 @@
           :disabled="!formValidation.isValid"
         />
       </template>
-      <button @click="test">test</button>
     </Dialog>
   </span>
 </template>
@@ -212,9 +210,10 @@
 import ReadOnlyBadge from "@/components/layout-ui/badge/ReadOnlyBadge.vue";
 import { ref, reactive, computed, watch } from "vue";
 import { useStoreStore } from "@/stores/customers/store";
-// import { useCompanyStore } from "@/stores/customers/company";
+import { useCompanyStore } from "@/stores/customers/company";
 
 import {
+  formLabelClass,
   formBreakPoints,
   formWidth,
   createForm,
@@ -224,8 +223,8 @@ import {
 } from "@/plugins/GlobalSetting";
 
 const storePinia = useStoreStore();
-// const companyPinia = useCompanyStore();
-// storePinia.getCompanyList();
+const companyPinia = useCompanyStore();
+companyPinia.getCompanyList();
 
 const formMode = ref("");
 const defaultInput = ref(null);
@@ -329,8 +328,6 @@ const formValidation = computed(() => {
 //   isFormValid();
 //   console.log(isFormValid.value);
 // });
-
-const inputClass = "flex align-items-center justify-content-center mb-2";
 
 defineExpose({
   openModal,

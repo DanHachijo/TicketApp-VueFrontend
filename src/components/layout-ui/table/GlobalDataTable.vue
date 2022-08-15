@@ -20,6 +20,7 @@
             currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
             v-model:filters="filters"
             filterDisplay="menu"
+            ref="dt"
           >
             <!-- Table Title and Buttons -->
             <template #header>
@@ -29,20 +30,24 @@
                 </span>
                 <span class="flex align-items-center">
                   <Button
+                    v-if="!props.isHideOption"
                     class="p-button-sm mx-2"
                     @click="emitCreate"
                     icon="pi pi-plus"
+                    v-tooltip.top="'Create a new data'"
                   ></Button>
 
                   <Button
                     icon="pi pi-external-link"
                     class="mx-2 p-button-sm p-button-info"
                     @click="exportCSV($event)"
+                    v-tooltip.top="'Download displayed table to CSV file'"
                   />
                   <Button
                     icon="pi pi-replay"
                     class="mx-2 p-button-sm p-button-secondary"
                     @click="reloadTable"
+                    v-tooltip.top="'Reload a data'"
                   />
 
                   <span class="mx-2 p-input-icon-left">
@@ -68,9 +73,9 @@
             </template>
 
             <Column
+              v-if="!props.isHideOption"
               :exportable="false"
               style="min-width: 100px; min-height: 100px"
-              class="z-1"
             >
               <template #body="slotProps" class="flex">
                 <ToggleButton
@@ -82,6 +87,7 @@
                   v-model="isToggle[slotProps.data.id]"
                   onIcon="pi pi-eye-slash"
                   offIcon="pi pi-exclamation-circle"
+                  v-tooltip.right="'Options'"
                 />
 
                 <div
@@ -130,17 +136,17 @@
 
 <script setup>
 import { ref, reactive, computed } from "vue";
-import { FilterMatchMode, FilterOperator } from "primevue/api";
+import { FilterMatchMode, FilterOperator, FilterService } from "primevue/api";
+import moment from "moment";
 
-const props = defineProps(["data", "reloadTable", "tableName"]);
-
+const props = defineProps(["data", "reloadTable", "tableName", "isHideOption"]);
 const loading = computed(() => {
   return props.data ? false : true;
 });
 
-
+const dt = ref();
 const exportCSV = () => {
-  props.data.exportCSV();
+  dt.value.exportCSV();
 };
 
 const isToggle = reactive({});
@@ -188,8 +194,6 @@ const emitDelete = (data, id) => {
 //   };
 // };
 
-const filters = ref(null);
-
 const companyFilters = {
   global: { value: null, matchMode: FilterMatchMode.CONTAINS },
   name: {
@@ -232,20 +236,77 @@ const contactFilters = {
   },
 };
 
+// moment('2010-10-20').isBetween('2010-10-19', '2010-10-25');
+FilterService.register("isDateBetween", (a, b) => {
+  console.log(b?.[0]);
+  console.log(b?.[1]);
+  // console.log(a);
+  // console.log(moment(b).format("MM/DD/YYYY"));
+  // a == b;
+});
+
 const ticketFilters = {
   global: { value: null, matchMode: FilterMatchMode.CONTAINS },
-  ticket_date: {value: null, matchMode: FilterMatchMode.BETWEEN},
+  is_open: { value: null, matchMode: FilterMatchMode.EQUALS },
+  // ticket_date: { value: null, matchMode: "isDateBetween" },
+  // ticket_date: {
+  //   operator: FilterOperator.AND,
+  //   constraints: [
+  //     { value: null, matchMode: FilterMatchMode.DATE_BEFORE },
+  //     { value: null, matchMode: FilterMatchMode.DATE_AFTER },
+  //   ],
+  // },
+  "company.name": {
+    operator: FilterOperator.OR,
+    constraints: [{ value: null, matchMode: FilterMatchMode.CONTAINS }],
+  },
+  "store.name": {
+    operator: FilterOperator.OR,
+    constraints: [{ value: null, matchMode: FilterMatchMode.CONTAINS }],
+  },
+  "category.name": { value: null, matchMode: FilterMatchMode.EQUALS },
+  inquiry: {
+    operator: FilterOperator.OR,
+    constraints: [{ value: null, matchMode: FilterMatchMode.CONTAINS }],
+  },
+  respond: {
+    operator: FilterOperator.OR,
+    constraints: [{ value: null, matchMode: FilterMatchMode.CONTAINS }],
+  },
+  is_email: { value: null, matchMode: FilterMatchMode.EQUALS },
+  is_programupdate: { value: null, matchMode: FilterMatchMode.EQUALS },
+  is_sales: { value: null, matchMode: FilterMatchMode.EQUALS },
+  "created_by.user_name": {
+    operator: FilterOperator.OR,
+    constraints: [{ value: null, matchMode: FilterMatchMode.CONTAINS }],
+  },
 };
 
-props.tableName.toLowerCase() == "company"
-  ? (filters.value = companyFilters)
-  : props.tableName.toLowerCase() == "store"
-  ? (filters.value = storeFilters)
-  : props.tableName.toLowerCase() == "contact"
-  ? (filters.value = contactFilters)
-  : props.tableName.toLowerCase() == "ticket"
-  ? (filters.value = ticketFilters)
-  : console.log("Please Add the table filter in GlobalDataTable.vue");
+const filters = ref(null);
+const updateFIlters = (() => {
+  switch (props.tableName) {
+    // Customers
+    case "company":
+      filters.value = companyFilters;
+      break;
+    case "store":
+      filters.value = storeFilters;
+      break;
+    case "contact":
+      filters.value = contactFilters;
+      break;
+    // Tickets
+    case "ticket":
+      filters.value = ticketFilters;
+      break;
+    // Members
+    // case "office":
+    //   filters.value = officeFilters;
+    default:
+      filters.value = {global: { value: null, matchMode: FilterMatchMode.CONTAINS }}
+      console.log("changeFormMode is not getting the formMode.value");
+  }
+})();
 </script>
 
 <style>

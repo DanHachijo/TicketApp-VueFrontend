@@ -2,6 +2,9 @@
 import moment from "moment";
 import { computed } from "vue";
 
+import { useToast } from "primevue/usetoast";
+
+
 const createForm = {
   formHeader: "Create",
   okBtnClass: "p-button-primary",
@@ -40,13 +43,16 @@ const showElipsis = (str) => {
   return String(str).length >= 10 ? String(str).substring(0, 9) + "..." : str;
 };
 
-// const dateConvert = computed((date) => {
-//   return moment(date);
-// });
+
+const dateConvert = computed((date)=>{
+  return moment(date)
+})
 
 const selectStore = computed((defaultInput) => {
-  return ref(defaultInput ? "Company or Head Office" : "Store");
+  return ref(defaultInput? "Company or Head Office" : "Store");
 });
+
+// Toast
 
 
 export {
@@ -57,6 +63,7 @@ export {
   eraseForm,
   formBreakPoints,
   formWidth,
+  // formatDate,
   formLabelClass,
-  selectStore,
+  selectStore
 };

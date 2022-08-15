@@ -11,14 +11,11 @@
           <h2 class="flex justify-content-center">
             {{ formConfig.formHeader }} Contact
           </h2>
-          <ReadOnlyBadge
-            v-if="formConfig.isReadyOnly"
-            class="ml-3 flex justify-content-center"
-          />
+          <ReadOnlyBadge v-if="formConfig.isReadyOnly" />
         </span>
       </template>
       <div class="flex flex-column">
-        <h5>Select a contact type</h5>
+        <label :class="formLabelClass">Select a contact type</label>
         <SelectButton
           v-model="contactType.value"
           :options="contactOptions"
@@ -26,16 +23,18 @@
           :disabled="formConfig.isReadyOnly"
         />
 
-        <span v-if="contactType.value == 'Company or Head Office'">
-          <h5 class="flex">Company Name</h5>
+        <span
+          v-if="contactType.value == 'Company or Head Office'"
+          class="flex flex-column"
+        >
+          <label :class="formLabelClass">Company Name</label>
 
           <Dropdown
             v-model="formState.company"
-            :options="storePinia.companyList"
+            :options="companyPinia.companyList"
             optionLabel="name"
             optionValue="id"
             placeholder="Select a Company"
-            :class="inputClass"
             :disabled="formConfig.isReadyOnly"
           >
             <template #option="slotProps">
@@ -50,16 +49,15 @@
           </Dropdown>
         </span>
 
-        <span v-if="contactType.value == 'Store'">
-          <h5 class="flex">Store Name</h5>
+        <span v-if="contactType.value == 'Store'" class="flex flex-column">
+          <label :class="formLabelClass">Store Name</label>
 
           <Dropdown
             v-model="formState.store"
-            :options="contactPinia.storeList"
+            :options="storePinia.storeList"
             optionLabel="name"
             optionValue="id"
             placeholder="Select a Store"
-            :class="inputClass"
             :disabled="formConfig.isReadyOnly"
           >
             <template #option="slotProps">
@@ -82,47 +80,47 @@
           </Dropdown>
         </span>
 
-        <h5 class="flex">Contact Name</h5>
+        <label :class="formLabelClass">Contact Name</label>
+
         <InputText
           type="text"
           v-model="formState.contact"
-          :class="inputClass"
           :readonly="formConfig.isReadyOnly"
         />
         <p class="invalid-form text-xs" v-show="!formValidation.contact.check">
           {{ formValidation.contact.error }}
         </p>
 
-        <h5 class="flex">Title</h5>
+        <label :class="formLabelClass">Title</label>
+
         <InputText
           type="text"
           v-model="formState.title"
-          :class="inputClass"
           :readonly="formConfig.isReadyOnly"
         />
 
-        <h5 class="flex">Phone</h5>
+        <label :class="formLabelClass">Phone</label>
+
         <InputText
           type="text"
           v-model="formState.phone"
-          :class="inputClass"
           :readonly="formConfig.isReadyOnly"
         />
 
-        <h5 class="flex">Email</h5>
+        <label :class="formLabelClass">Email</label>
+
         <InputText
           type="text"
           v-model="formState.email"
-          :class="inputClass"
           :readonly="formConfig.isReadyOnly"
         />
 
-        <h5 class="flex">Note</h5>
+        <label :class="formLabelClass">Note</label>
+
         <Textarea
           rows="5"
           cols="30"
           v-model="formState.memo"
-          :class="inputClass"
           :readonly="formConfig.isReadyOnly"
         />
         <p class="invalid-form text-xs" v-show="!formValidation.memo.check">
@@ -143,7 +141,7 @@
           icon="pi pi-check"
           @click="
             // closeModal();
-            okClick(formMode, storePinia);
+            okClick(formMode, storePinia)
           "
           :class="formConfig.okBtnClass"
           :disabled="!formValidation.isValid"
@@ -155,10 +153,12 @@
 
 <script setup>
 import ReadOnlyBadge from "@/components/layout-ui/badge/ReadOnlyBadge.vue";
-import { ref, reactive, computed, watch, onMounted } from "vue";
+import { ref, reactive, computed } from "vue";
+import { useCompanyStore } from "@/stores/customers/company";
 import { useStoreStore } from "@/stores/customers/store";
 import { useContactStore } from "@/stores/customers/contact";
 import {
+  formLabelClass,
   formBreakPoints,
   formWidth,
   createForm,
@@ -167,7 +167,12 @@ import {
   eraseForm,
 } from "@/plugins/GlobalSetting";
 
+const companyPinia = useCompanyStore();
+companyPinia.getCompanyList();
+
 const storePinia = useStoreStore();
+storePinia.getStoreList();
+
 const contactPinia = useContactStore();
 
 const formMode = ref("");
@@ -190,6 +195,7 @@ const closeModal = () => {
 const okClick = ref(null);
 
 const formConfig = ref({});
+
 const changeFormMode = () => {
   switch (formMode.value) {
     case "create":
@@ -206,7 +212,8 @@ const changeFormMode = () => {
       break;
     case "erase":
       formConfig.value = eraseForm;
-      okClick.value = () => contactPinia.deleteData(defaultInput.value.id, closeModal);
+      okClick.value = () =>
+        contactPinia.deleteData(defaultInput.value.id, closeModal);
       break;
     default:
       console.log("changeFormMode is not getting the formMode.value");
@@ -222,6 +229,9 @@ const initialFormState = {
   email: "",
   memo: "",
 };
+
+
+
 
 
 const formState = reactive({ ...initialFormState });
@@ -246,6 +256,8 @@ const contactType = computed(() => {
   return ref(defaultInput?.value?.company ? "Company or Head Office" : "Store");
 });
 
+const contactOptions = ref(["Company or Head Office", "Store"]);
+
 const formValidation = computed(() => {
   return reactive({
     contact: {
@@ -261,10 +273,6 @@ const formValidation = computed(() => {
     },
   });
 });
-
-const contactOptions = ref(["Company or Head Office", "Store"]);
-
-const inputClass = "flex align-items-center justify-content-center mb-2";
 
 defineExpose({
   openModal,

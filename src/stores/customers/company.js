@@ -5,6 +5,7 @@ import {
   updateCompany,
   createCompany,
   deleteCompany,
+  getCompanyListEvent,
 } from "@/plugins/EventService";
 import { useToast } from "primevue/usetoast";
 
@@ -54,7 +55,7 @@ export const useCompanyStore = defineStore("company", () => {
       .then((response) => {
         console.log("Company Updated" + response.data);
         getData();
-        closeModal()
+        closeModal();
         toastSuccess("updated");
       })
       .catch((error) => {
@@ -69,7 +70,7 @@ export const useCompanyStore = defineStore("company", () => {
       .then((response) => {
         console.log("Company Updated" + response.data);
         getData();
-        closeModal()
+        closeModal();
         toastSuccess("created");
       })
       .catch((error) => {
@@ -84,7 +85,7 @@ export const useCompanyStore = defineStore("company", () => {
       .then((response) => {
         console.log("Company Updated" + response.data);
         getData();
-        closeModal()
+        closeModal();
         toastSuccess("deleted");
       })
       .catch((error) => {
@@ -94,6 +95,16 @@ export const useCompanyStore = defineStore("company", () => {
       });
   };
 
+  const getCompanyList = () => {
+    getCompanyListEvent()
+      .then((response) => {
+        companyList.value = response.data;
+      })
+      .catch((error) => {
+        console.log("companyList:" + error);
+      });
+    loading.value = true;
+  };
 
   return {
     data,
@@ -106,5 +117,6 @@ export const useCompanyStore = defineStore("company", () => {
     toastSuccess,
     toastError,
     companyList,
+    getCompanyList,
   };
 });

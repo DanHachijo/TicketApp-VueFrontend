@@ -9,87 +9,79 @@
       <template #header>
         <div class="flex">
           <h2 class="">{{ formConfig.formHeader }} Company</h2>
-          <ReadOnlyBadge v-if="formConfig.isReadyOnly" class="ml-3" />
+          <ReadOnlyBadge v-if="formConfig.isReadyOnly" />
         </div>
       </template>
 
       <div class="flex flex-column">
-        <h5 class="flex">※Company Name</h5>
+        <label :class="formLabelClass">※Company Name</label>
         <InputText
           type="text"
           v-model="formState.name"
-          :class="inputClass"
           :readonly="formConfig.isReadyOnly"
         />
         <p class="invalid-form text-xs" v-show="!formValidation.name.check">
           {{ formValidation.name.error }}
         </p>
 
-        <h5 class="flex">companyID</h5>
+        <label :class="formLabelClass">companyID</label>
         <InputText
           type="text"
           v-model="formState.companyID"
-          :class="inputClass"
           :readonly="formConfig.isReadyOnly"
         />
 
-        <h5 class="flex">Street</h5>
+        <label :class="formLabelClass">Street</label>
         <InputText
           type="text"
           v-model="formState.street"
-          :class="inputClass"
           :readonly="formConfig.isReadyOnly"
         />
 
-        <h5 class="flex">Suite</h5>
+        <label :class="formLabelClass">Suite</label>
         <InputText
           type="text"
           v-model="formState.suite"
-          :class="inputClass"
           :readonly="formConfig.isReadyOnly"
         />
 
-        <h5 class="flex">City</h5>
+        <label :class="formLabelClass">City</label>
         <InputText
           type="text"
           v-model="formState.city"
-          :class="inputClass"
           :readonly="formConfig.isReadyOnly"
         />
 
-        <h5 class="flex">State</h5>
+        <label :class="formLabelClass">State</label>
         <InputText
           type="text"
           v-model="formState.state"
-          :class="inputClass"
           :readonly="formConfig.isReadyOnly"
         />
 
-        <h5 class="flex">Zip</h5>
+        <label :class="formLabelClass">Zip</label>
         <InputText
           type="text"
           v-model="formState.zipcode"
-          :class="inputClass"
           :readonly="formConfig.isReadyOnly"
         />
 
-        <h5 class="flex">Note</h5>
+        <label :class="formLabelClass">Note</label>
         <Textarea
           rows="5"
           cols="30"
           v-model="formState.memo"
-          :class="inputClass"
           :readonly="formConfig.isReadyOnly"
         />
 
-        <h5 class="flex">Contract</h5>
+        <label :class="formLabelClass" class="mb-4">Contract</label>
         <div class="field-radiobutton" :readonly="formConfig.isReadyOnly">
           <RadioButton
             :value="true"
             v-model="formState.is_customer"
             :disabled="formConfig.isReadyOnly"
           />
-          <label for="city1">Cusomter</label>
+          <label>Cusomter</label>
         </div>
         <div class="field-radiobutton">
           <RadioButton
@@ -97,17 +89,17 @@
             v-model="formState.is_customer"
             :disabled="formConfig.isReadyOnly"
           />
-          <label for="city2">Not Customer</label>
+          <label>Not Customer</label>
         </div>
 
-        <h5 class="flex">Status</h5>
+        <label :class="formLabelClass">Status</label>
         <div class="field-radiobutton">
           <RadioButton
             :value="true"
             v-model="formState.is_active"
             :disabled="formConfig.isReadyOnly"
           />
-          <label for="city1">In Operation</label>
+          <label>In Operation</label>
         </div>
         <div class="field-radiobutton">
           <RadioButton
@@ -115,18 +107,22 @@
             v-model="formState.is_active"
             :disabled="formConfig.isReadyOnly"
           />
-          <label for="city2">Closed Permanently</label>
+          <label>Closed Permanently</label>
         </div>
 
-        <span v-if="!formState.is_customer && formState.is_active">
-          <h5 class="flex">Prospect</h5>
+        <label
+          :class="formLabelClass"
+          v-if="!formState.is_customer && formState.is_active"
+          >Prospect</label
+        >
+        <div v-if="!formState.is_customer && formState.is_active">
           <div class="field-radiobutton">
             <RadioButton
               :value="true"
               v-model="formState.is_prospect"
               :disabled="formConfig.isReadyOnly"
             />
-            <label for="city1">Prospect</label>
+            <label>Prospect</label>
           </div>
           <div class="field-radiobutton">
             <RadioButton
@@ -134,9 +130,9 @@
               v-model="formState.is_prospect"
               :disabled="formConfig.isReadyOnly"
             />
-            <label for="city2">No Prospect</label>
+            <label>No Prospect</label>
           </div>
-        </span>
+        </div>
       </div>
 
       <template #footer>
@@ -164,6 +160,7 @@ import ReadOnlyBadge from "@/components/layout-ui/badge/ReadOnlyBadge.vue";
 import { ref, reactive, computed } from "vue";
 import { useCompanyStore } from "@/stores/customers/company";
 import {
+  formLabelClass,
   formBreakPoints,
   formWidth,
   createForm,
@@ -261,8 +258,6 @@ const formValidation = computed(() => {
 const checkForm = () => {
   Object.values(formValidation.value);
 };
-
-const inputClass = "flex align-items-center justify-content-center mb-2";
 
 defineExpose({
   openModal,

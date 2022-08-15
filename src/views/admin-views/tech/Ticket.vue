@@ -16,24 +16,49 @@
         :sortable="true"
         :showFilterMatchModes="false"
       >
-        <template #filter="{ filterModel }">
-        <!-- {{formatDate(filterModel.value)}} -->
-                {{filterModel.value}}
-
-          <Calendar v-model="filterModel.value" selectionMode="range" :showButtonBar="true" />
+        <template #body="{ data }">
+          {{ data.ticket_date }}
         </template>
+        <!-- <template #filter="{ filterModel }">
+          {{ filterModel.value }}
+          <Calendar
+            v-model="filterModel.value"
+            :showTime="false"
+            :showSeconds="false"
+            :showButtonBar="true"
+            dateFormat="mm/dd/yy"
+            :showIcon="true"
+            selectionMode="range"
+          />
+        </template> -->
       </Column>
-      <Column field="complete_by" header="Complete By" :sortable="true">
+
+      <Column field="is_open" header="Complete By" dataType="boolean">
         <template #body="slotProps" class="flex">
           <span v-if="slotProps.data.is_open">
-            <Badge
-              :value="`Complete by ${slotProps.data.complete_by}`"
-              severity="danger"
-            />
+            <Badge severity="danger">
+              <span v-if="slotProps.data.complete_by != null">{{
+                slotProps.data.complete_by
+              }}</span>
+              <span v-else>Open</span>
+            </Badge>
           </span>
           <span v-else>
             <Badge value="Completed" severity="success" />
           </span>
+        </template>
+
+        <template #filter="{ filterModel }">
+          <h4 class="mb-4">Select the status</h4>
+
+          <div class="field-radiobutton">
+            <RadioButton id="1" value="true" v-model="filterModel.value" />
+            <label for="1">Open Tickets</label>
+          </div>
+          <div class="field-radiobutton">
+            <RadioButton id="2" value="false" v-model="filterModel.value" />
+            <label for="2">Closed Tickets</label>
+          </div>
         </template>
       </Column>
 
@@ -46,11 +71,16 @@
             :placeholder="`Search by company- `"
           />
         </template>
+        <template #body="{ data }">
+          <div v-if="data.store?.name">{{ data.store?.company?.name }}</div>
+          <div v-else-if="data.company?.name">{{ data.company?.name }}</div>
+          <!-- <div v-else>---</div> -->
+        </template>
       </Column>
 
       <Column field="store.name" header="Store Name" :sortable="true">
         <template #body="{ data }"
-          ><div v-if="!data.store?.name">---</div>
+          ><div v-if="!data.store?.name" class="text-500">HQ or All Stores</div>
           <div v-else>{{ data.store?.name }}</div></template
         >
         <template #filter="{ filterModel }">
@@ -63,7 +93,7 @@
         </template>
       </Column>
 
-      <Column header="Contact" :sortable="true">
+      <Column header="Contact">
         <template #body="slotProps">
           <span v-if="slotProps.data.is_contact">
             {{ slotProps.data.contact.contact }}
@@ -85,9 +115,8 @@
         </template>
       </Column>
 
-      <Column field="inquiry" header="Inquiry" :sortable="true">
+      <Column field="inquiry" header="Inquiry">
         <template #body="{ data }">
-          {{ data.inquiry }}
           <span>{{ showElipsis(data.inquiry) }}</span>
         </template>
         <template #filter="{ filterModel }">
@@ -102,6 +131,8 @@
 
       <Column field="respond" header="Respond" :sortable="true">
         <template #body="{ data }">
+          <!-- {{String(data.respond).length}} -->
+          <!-- {{data.respond}} -->
           <span>{{ showElipsis(data.respond) }}</span>
         </template>
         <template #filter="{ filterModel }">
@@ -150,6 +181,17 @@
             severity="success"
           />
         </template>
+
+        <template #filter="{ filterModel }">
+          <div class="field-radiobutton">
+            <RadioButton id="1" value="true" v-model="filterModel.value" />
+            <label for="1">Program Update</label>
+          </div>
+          <div class="field-radiobutton">
+            <RadioButton id="2" value="false" v-model="filterModel.value" />
+            <label for="2">No Program Update</label>
+          </div>
+        </template>
       </Column>
 
       <Column
@@ -160,6 +202,17 @@
       >
         <template #body="{ data }">
           <Badge v-if="data.is_sales" value="Sales" severity="warning" />
+        </template>
+
+        <template #filter="{ filterModel }">
+          <div class="field-radiobutton">
+            <RadioButton id="1" value="true" v-model="filterModel.value" />
+            <label for="1">Sales</label>
+          </div>
+          <div class="field-radiobutton">
+            <RadioButton id="2" value="false" v-model="filterModel.value" />
+            <label for="2">Not Sales</label>
+          </div>
         </template>
       </Column>
 
@@ -185,14 +238,15 @@ import GlobalDataTable from "@/components/layout-ui/table/GlobalDataTable.vue";
 import { useTicketStore } from "@/stores/tech/ticket";
 
 import TicketForm from "@/components/layout-ui/form/tech/TicketForm.vue";
-import { showElipsis, formatDate } from "@/plugins/GlobalSetting";
+import { showElipsis } from "@/plugins/GlobalSetting";
+import moment from "moment";
 
 const ticketPinia = useTicketStore();
 ticketPinia.getData();
 
 const refForm = ref(null);
 const defaultInput = ref(null);
-console.log(formatDate(new Date("2022-08-01T15:00:00.000Z")))
+
 const createForm = (data) => refForm.value.openModal(data, "create");
 const viewForm = (data) => refForm.value.openModal(data, "view");
 const editForm = (data) => refForm.value.openModal(data, "edit");

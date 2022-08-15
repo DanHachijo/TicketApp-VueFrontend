@@ -5,7 +5,7 @@ import {
   updateStore,
   createStore,
   deleteStore,
-  getCompanyListEvent,
+  getStoreListEvent,
 } from "@/plugins/EventService";
 import { useToast } from "primevue/usetoast";
 
@@ -13,7 +13,9 @@ export const useStoreStore = defineStore("store", () => {
   const toast = useToast();
   const data = ref(null);
   const loading = ref(true);
-  const companyList = ref([]);
+  const storeList = ref([]);
+
+  // const companyList = ref([]);
 
   const toastSuccess = (msg) => {
     toast.add({
@@ -43,7 +45,7 @@ export const useStoreStore = defineStore("store", () => {
         toastError(error);
       });
     loading.value = true;
-    getCompanyList();
+    // getCompanyList();
   };
 
   const reloadTable = () => {
@@ -93,17 +95,18 @@ export const useStoreStore = defineStore("store", () => {
       });
   };
 
-  const getCompanyList = () => {
-    getCompanyListEvent()
+  const getStoreList = () => {
+    getStoreListEvent()
       .then((response) => {
-        companyList.value = response.data;
+        storeList.value = response.data;
       })
       .catch((error) => {
-        console.log("companyList:" + error);
+        console.log("storeList:" + error);
       });
     loading.value = true;
   };
-  getCompanyList()
+
+  // getCompanyList()
 
   return {
     data,
@@ -113,7 +116,9 @@ export const useStoreStore = defineStore("store", () => {
     updateData,
     deleteData,
     reloadTable,
-    getCompanyList,
-    companyList,
+    getStoreList,
+    storeList,
+    // getCompanyList,
+    // companyList,
   };
 });
