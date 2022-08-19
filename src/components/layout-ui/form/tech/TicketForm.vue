@@ -487,7 +487,7 @@ const formConfig = ref({});
 
 const changeFormMode = () => {
   switch (formMode.value) {
-    case "create":formHeader
+    case "create":
       formConfig.value = createForm;
       okClick.value = () => ticketPinia.createData(formState, closeModal);
       break;

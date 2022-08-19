@@ -1,27 +1,24 @@
 import { defineStore } from "pinia";
 import { ref, toRaw } from "vue";
 import {
-  getStore,
-  updateStore,
-  createStore,
-  deleteStore,
-  getStoreListEvent,
+  getDevice,
+  createDevice,
+  updateDevice,
+  deleteDevice,
 } from "@/plugins/EventService";
 import { useToast } from "primevue/usetoast";
 
-export const useStoreStore = defineStore("store", () => {
+
+export const useDeviceStore = defineStore("device", () => {
   const toast = useToast();
   const data = ref(null);
   const loading = ref(true);
-  const storeList = ref([]);
-
-  // const companyList = ref([]);
 
   const toastSuccess = (msg) => {
     toast.add({
       severity: "success",
       summary: "Data Updated",
-      detail: `Store data was successfully ${msg}.`,
+      detail: `Ticket data was successfully ${msg}.`,
       life: 3000,
     });
   };
@@ -36,17 +33,15 @@ export const useStoreStore = defineStore("store", () => {
   };
 
   const getData = () => {
-    getStore()
+    getDevice()
       .then((response) => {
         data.value = response.data;
       })
       .catch((error) => {
-        console.log("data:" + error);
         toastError(error);
       });
-    loading.value = true;
-    // getCompanyList();
   };
+  getData()
 
   const reloadTable = () => {
     getData();
@@ -54,61 +49,49 @@ export const useStoreStore = defineStore("store", () => {
   };
 
   const updateData = (formState, id, closeModal) => {
-    updateStore(id, toRaw(formState))
+    updateDevice(id, toRaw(formState))
       .then((response) => {
-        console.log("Store Updated" + response.data);
+        console.log("Device Updated" + response.data);
         getData();
         closeModal();
         toastSuccess("updated");
       })
       .catch((error) => {
+        console.log(error);
         getData();
         toastError(error);
       });
   };
 
   const createData = (formState, closeModal) => {
-    createStore(toRaw(formState))
+    createDevice(toRaw(formState))
       .then((response) => {
-        console.log("Store Created" + response.data);
+        console.log("Contact Updated" + response.data);
         getData();
         closeModal();
         toastSuccess("created");
       })
       .catch((error) => {
+        console.log(error);
         getData();
         toastError(error);
       });
   };
 
   const deleteData = (id, closeModal) => {
-    deleteStore(id)
+    deleteDevice(id)
       .then((response) => {
-        console.log("Company Deleted" + response.data);
+        console.log("Ticket Deleted" + response.data);
         getData();
         closeModal();
         toastSuccess("deleted");
       })
       .catch((error) => {
+        console.log(error);
         getData();
         toastError(error);
       });
   };
-
-  const getStoreList = () => {
-    getStoreListEvent()
-      .then((response) => {
-        storeList.value = response.data;
-      })
-      .catch((error) => {
-        console.log("storeList:" + error);
-      });
-    loading.value = true;
-  };
-
-  getData();
-  getStoreList();
-  // getCompanyList()
 
   return {
     data,
@@ -118,9 +101,7 @@ export const useStoreStore = defineStore("store", () => {
     updateData,
     deleteData,
     reloadTable,
-    getStoreList,
-    storeList,
-    // getCompanyList,
-    // companyList,
+    toastSuccess,
+    toastError,
   };
 });

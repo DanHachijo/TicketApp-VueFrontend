@@ -1,27 +1,23 @@
 import { defineStore } from "pinia";
 import { ref, toRaw } from "vue";
 import {
-  getStore,
-  updateStore,
-  createStore,
-  deleteStore,
-  getStoreListEvent,
+  getWebPortal,
+  createWebPortal,
+  updateWebPortal,
+  deleteWebPortal,
 } from "@/plugins/EventService";
 import { useToast } from "primevue/usetoast";
 
-export const useStoreStore = defineStore("store", () => {
+export const useWebPortalStore = defineStore("webportal", () => {
   const toast = useToast();
   const data = ref(null);
   const loading = ref(true);
-  const storeList = ref([]);
-
-  // const companyList = ref([]);
 
   const toastSuccess = (msg) => {
     toast.add({
       severity: "success",
       summary: "Data Updated",
-      detail: `Store data was successfully ${msg}.`,
+      detail: `Web Portal data was successfully ${msg}.`,
       life: 3000,
     });
   };
@@ -36,17 +32,15 @@ export const useStoreStore = defineStore("store", () => {
   };
 
   const getData = () => {
-    getStore()
+    getWebPortal()
       .then((response) => {
         data.value = response.data;
       })
       .catch((error) => {
-        console.log("data:" + error);
         toastError(error);
       });
-    loading.value = true;
-    // getCompanyList();
   };
+  getData();
 
   const reloadTable = () => {
     getData();
@@ -54,61 +48,49 @@ export const useStoreStore = defineStore("store", () => {
   };
 
   const updateData = (formState, id, closeModal) => {
-    updateStore(id, toRaw(formState))
+    updateWebPortal(id, toRaw(formState))
       .then((response) => {
-        console.log("Store Updated" + response.data);
+        console.log("Web Portal Updated" + response.data);
         getData();
         closeModal();
         toastSuccess("updated");
       })
       .catch((error) => {
+        console.log(error);
         getData();
         toastError(error);
       });
   };
 
   const createData = (formState, closeModal) => {
-    createStore(toRaw(formState))
+    createWebPortal(toRaw(formState))
       .then((response) => {
-        console.log("Store Created" + response.data);
+        console.log("Web Portal Updated" + response.data);
         getData();
         closeModal();
         toastSuccess("created");
       })
       .catch((error) => {
+        console.log(error);
         getData();
         toastError(error);
       });
   };
 
   const deleteData = (id, closeModal) => {
-    deleteStore(id)
+    deleteWebPortal(id)
       .then((response) => {
-        console.log("Company Deleted" + response.data);
+        console.log("Web Portal Deleted" + response.data);
         getData();
         closeModal();
         toastSuccess("deleted");
       })
       .catch((error) => {
+        console.log(error);
         getData();
         toastError(error);
       });
   };
-
-  const getStoreList = () => {
-    getStoreListEvent()
-      .then((response) => {
-        storeList.value = response.data;
-      })
-      .catch((error) => {
-        console.log("storeList:" + error);
-      });
-    loading.value = true;
-  };
-
-  getData();
-  getStoreList();
-  // getCompanyList()
 
   return {
     data,
@@ -118,9 +100,7 @@ export const useStoreStore = defineStore("store", () => {
     updateData,
     deleteData,
     reloadTable,
-    getStoreList,
-    storeList,
-    // getCompanyList,
-    // companyList,
+    toastSuccess,
+    toastError,
   };
 });

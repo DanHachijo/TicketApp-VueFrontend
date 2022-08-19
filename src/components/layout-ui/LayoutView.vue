@@ -7,7 +7,6 @@
     </span>
     <h2 class="flex align-items-center justify-content-center">CRUD APP</h2>
     <h2 class="flex align-items-center justify-content-center mx-3">
-      <!-- <span v-if="userName">Hi, {{ userName || "User" }}</span> -->
       <span >Hi, {{ userPinia.loggedinUser || "User" }}</span>
     </h2>
   </div>
@@ -26,8 +25,4 @@ import { useUserStore } from "@/stores/members/user";
 const userPinia = useUserStore();
 
 
-// const userName = ref(window.localStorage.getItem("user_name"));
-// const isLoggedIn = computed(() => {
-//   return userName.value.length > 1;
-// });
 </script>

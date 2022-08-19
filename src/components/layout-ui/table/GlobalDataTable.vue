@@ -1,7 +1,8 @@
 <template>
-  <span>
-    <Card>
-      <template #content>
+  <span class="p-card-content">
+    <!-- {{isSingleView}} -->
+    <!-- <Card>
+      <template #content> -->
         <div class="card border-round">
           <DataTable
             :value="data"
@@ -129,15 +130,17 @@
             <slot name="column"></slot>
           </DataTable>
         </div>
-      </template>
-    </Card>
+      <!-- </template>
+    </Card> -->
   </span>
 </template>
 
 <script setup>
 import { ref, reactive, computed } from "vue";
 import { FilterMatchMode, FilterOperator, FilterService } from "primevue/api";
-import moment from "moment";
+import { inject } from "vue";
+
+const isSingleView = inject("isSingleView");
 
 const props = defineProps(["data", "reloadTable", "tableName", "isHideOption"]);
 const loading = computed(() => {
@@ -282,6 +285,104 @@ const ticketFilters = {
   },
 };
 
+const deviceFilters = {
+  global: { value: null, matchMode: FilterMatchMode.CONTAINS },
+  "store.name": {
+    operator: FilterOperator.OR,
+    constraints: [{ value: null, matchMode: FilterMatchMode.CONTAINS }],
+  },
+  label_name: {
+    operator: FilterOperator.OR,
+    constraints: [{ value: null, matchMode: FilterMatchMode.CONTAINS }],
+  },
+  model_name: {
+    operator: FilterOperator.OR,
+    constraints: [{ value: null, matchMode: FilterMatchMode.CONTAINS }],
+  },
+  location: {
+    operator: FilterOperator.OR,
+    constraints: [{ value: null, matchMode: FilterMatchMode.CONTAINS }],
+  },
+  serial_no: {
+    operator: FilterOperator.OR,
+    constraints: [{ value: null, matchMode: FilterMatchMode.CONTAINS }],
+  },
+  note: {
+    operator: FilterOperator.OR,
+    constraints: [{ value: null, matchMode: FilterMatchMode.CONTAINS }],
+  },
+  "created_by.user_name": {
+    operator: FilterOperator.OR,
+    constraints: [{ value: null, matchMode: FilterMatchMode.CONTAINS }],
+  },
+  "updated_by.user_name": {
+    operator: FilterOperator.OR,
+    constraints: [{ value: null, matchMode: FilterMatchMode.CONTAINS }],
+  },
+  is_ip: { value: null, matchMode: FilterMatchMode.EQUALS },
+  is_login: { value: null, matchMode: FilterMatchMode.EQUALS },
+  is_teamviewer: { value: null, matchMode: FilterMatchMode.EQUALS },
+};
+
+const tvFilters = {
+  global: { value: null, matchMode: FilterMatchMode.CONTAINS },
+  "store.name": {
+    operator: FilterOperator.OR,
+    constraints: [{ value: null, matchMode: FilterMatchMode.CONTAINS }],
+  },
+  label_name: {
+    operator: FilterOperator.OR,
+    constraints: [{ value: null, matchMode: FilterMatchMode.CONTAINS }],
+  },
+  model_name: {
+    operator: FilterOperator.OR,
+    constraints: [{ value: null, matchMode: FilterMatchMode.CONTAINS }],
+  },
+  location: {
+    operator: FilterOperator.OR,
+    constraints: [{ value: null, matchMode: FilterMatchMode.CONTAINS }],
+  },
+  note: {
+    operator: FilterOperator.OR,
+    constraints: [{ value: null, matchMode: FilterMatchMode.CONTAINS }],
+  },
+  "created_by.user_name": {
+    operator: FilterOperator.OR,
+    constraints: [{ value: null, matchMode: FilterMatchMode.CONTAINS }],
+  },
+  "updated_by.user_name": {
+    operator: FilterOperator.OR,
+    constraints: [{ value: null, matchMode: FilterMatchMode.CONTAINS }],
+  },
+  is_ip: { value: null, matchMode: FilterMatchMode.EQUALS },
+  is_login: { value: null, matchMode: FilterMatchMode.EQUALS },
+  is_teamviewer: { value: null, matchMode: FilterMatchMode.EQUALS },
+};
+
+const userlistFilters = {
+  global: { value: null, matchMode: FilterMatchMode.CONTAINS },
+  "store.name": {
+    operator: FilterOperator.OR,
+    constraints: [{ value: null, matchMode: FilterMatchMode.CONTAINS }],
+  },
+  "site_type.name": {
+    operator: FilterOperator.OR,
+    constraints: [{ value: null, matchMode: FilterMatchMode.CONTAINS }],
+  },
+  user_type: {
+    operator: FilterOperator.OR,
+    constraints: [{ value: null, matchMode: FilterMatchMode.CONTAINS }],
+  },
+  language: {
+    operator: FilterOperator.OR,
+    constraints: [{ value: null, matchMode: FilterMatchMode.CONTAINS }],
+  },
+  "updated_by.user_name": {
+    operator: FilterOperator.OR,
+    constraints: [{ value: null, matchMode: FilterMatchMode.CONTAINS }],
+  },
+};
+
 const filters = ref(null);
 const updateFIlters = (() => {
   switch (props.tableName) {
@@ -299,12 +400,23 @@ const updateFIlters = (() => {
     case "ticket":
       filters.value = ticketFilters;
       break;
+    case "device":
+      filters.value = deviceFilters;
+      break;
+    case "teamviewer":
+      filters.value = tvFilters;
+      break;
+    case "User Info":
+      filters.value = userlistFilters;
+      break;
     // Members
     // case "office":
     //   filters.value = officeFilters;
     default:
-      filters.value = {global: { value: null, matchMode: FilterMatchMode.CONTAINS }}
-      console.log("changeFormMode is not getting the formMode.value");
+      filters.value = {
+        global: { value: null, matchMode: FilterMatchMode.CONTAINS },
+      };
+      console.log("appying the global filter only");
   }
 })();
 </script>

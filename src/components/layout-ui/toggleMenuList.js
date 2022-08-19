@@ -1,14 +1,81 @@
 import { ref } from "vue";
 // import { useUserStore } from "@/stores/members/user";
 
-
 // const userPinia = useUserStore()
 
 const items = ref([
   {
     label: "Dashboard",
     icon: "pi pi-fw pi-chart-line",
-    to: '/',
+    to: "/",
+  },
+  {
+    label: "Sales",
+    icon: "pi pi-fw pi-briefcase",
+    items: [
+      {
+        label: "Project Logs",
+        to: "/project-logs",
+      },
+      {
+        label: "Vendors",
+        to: "/vendors",
+      },
+      {
+        label: "Products",
+        to: "/products",
+      },
+      {
+        label: "Estimates",
+        to: "/estimates",
+      },
+      {
+        separator: true,
+      },
+      {
+        label: "Guide",
+      },
+    ],
+  },
+  {
+    label: "Tech",
+    icon: "pi pi-fw pi-database",
+    items: [
+      {
+        label: "Tickets",
+        to: "/ticket",
+      },
+      {
+        label: "System Guide",
+        to: "/system-guide",
+      },
+      {
+        label: "TeamViewer",
+        to: "/teamviewer",
+      },
+      {
+        label: "Device",
+        to: "/device",
+      },
+      {
+        label: "Web Portal",
+        to: "/web-portal",
+      },
+      {
+        label: "Login Info",
+        to: "/user-login-list",
+      },
+      {
+        label: "Manual",
+        to: "/manual",
+      },
+      {
+        separator: true,
+      },
+      {
+        label: "Guide",
+      },
+    ],
   },
   {
     label: "Cusotmers",
@@ -16,15 +83,15 @@ const items = ref([
     items: [
       {
         label: "Company",
-        to: '/company',
+        to: "/company",
       },
       {
         label: "Store",
-        to: '/store',
+        to: "/store",
       },
       {
         label: "Contact",
-        to: '/contact',
+        to: "/contact",
       },
       {
         separator: true,
@@ -33,90 +100,31 @@ const items = ref([
         label: "Guide",
       },
     ],
-  }, 
-  {
-    label: "Tech",
-    icon: "pi pi-fw pi-database",
-    items: [
-      {
-        label: "Tickets",
-        to: '/ticket',
-      },
-      {
-        label: "System Guide",
-        to: '/system-guide',
-      },
-      {
-        label: "TeamViewer",
-        to: '/teamviewer',
-      },
-      {
-        label: "FOODIT",
-        to: '/foodit',
-      },
-      {
-        label: "Manual",
-        to: '/manual',
-      },
-      {
-        separator: true,
-      },
-      {
-        label: "Guide",
-      },
-    ],
-  }, 
-  {
-    label: "Sales",
-    icon: "pi pi-fw pi-briefcase",
-    items: [
-      {
-        label: "Project Logs",
-        to: '/project-logs',
-      },
-      {
-        label: "Vendors",
-        to: '/vendors',
-      },
-      {
-        label: "Products",
-        to: '/products',
-      },
-      {
-        label: "Estimates",
-        to: '/estimates',
-      },
-      {
-        separator: true,
-      },
-      {
-        label: "Guide",
-      },
-    ],
-  }, 
+  },
+
   {
     label: "Team",
     icon: "pi pi-fw pi-users",
     items: [
       {
         label: "Office",
-        to: '/office',
+        to: "/office",
       },
       {
         label: "Members",
-        to: '/members',
+        to: "/members",
       },
     ],
-  }, 
+  },
   {
     separator: true,
   },
   {
     label: "Log Out",
     icon: "pi pi-fw pi-power-off",
-    to: '/login',
+    to: "/login",
     // command:userPinia.logOut()
   },
 ]);
 
-export {items}; 
+export { items };

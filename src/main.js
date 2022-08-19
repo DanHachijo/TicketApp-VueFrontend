@@ -46,6 +46,9 @@ import TriStateCheckbox from "primevue/tristatecheckbox";
 import SplitButton from "primevue/splitbutton";
 import SelectButton from "primevue/selectbutton";
 import Calendar from "primevue/calendar";
+// System Guide View
+import TabView from 'primevue/tabview';
+import TabPanel from 'primevue/tabpanel';
 
 const pinia = createPinia();
 const app = createApp(App);
@@ -82,6 +85,8 @@ app.component("SelectButton", SelectButton);
 app.component("ProgressSpinner", ProgressSpinner);
 app.component("Calendar", Calendar);
 app.component("Checkbox", Checkbox);
+app.component("TabView", TabView);
+app.component("TabPanel", TabPanel);
 app.directive("Tooltip", Tooltip);
 
 app.mount("#app");

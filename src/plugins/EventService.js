@@ -45,8 +45,6 @@ export const submitLoginEvent = (logininfo) => {
   return loginClient.post("api-token-auth/", logininfo);
 };
 
-
-
 // MEMBERS
 export const getMember = () => {
   return apiClient().get("staff/");
@@ -57,7 +55,6 @@ export const getOffice = () => {
 export const updateOffice = (id, data) => {
   return apiClient().patch(`office/${id}/`, data);
 };
-
 
 // Ticekts
 export const getTickets = (id) => {
@@ -167,9 +164,10 @@ export const getTv = (id) => {
   if (id !== undefined) {
     return apiClient().get(`devices/?store__id=${id}&is_teamviewer=true`);
   } else {
-    return apiClient().get("devices/");
+    return apiClient().get("devices/?store__id=&is_teamviewer=true");
   }
 };
+
 export const getDevice = (id) => {
   if (id !== undefined) {
     return apiClient().get(`devices/?store__id=${id}`);
@@ -186,34 +184,40 @@ export const updateDevice = (id, data) => {
 export const deleteDevice = (id) => {
   return apiClient().delete(`devices/${id}/`);
 };
-// FoodIT
-export const getFoodITList = (id) => {
+// WebPortal USER
+export const getUserLogin = (id) => {
   if (id !== undefined) {
-    return apiClient().get(`foodit-list/?store__id=${id}`);
+    return apiClient().get(`website-user/?store__id=${id}`);
   } else {
-    return apiClient().get("foodit-list/");
+    return apiClient().get("website-user/");
   }
 };
-export const createFoodITList = (data) => {
-  return apiClient().post("foodit-list/", data);
+export const createuserLogin = (data) => {
+  return apiClient().post("website-user/", data);
 };
-export const updateFoodITList = (id, data) => {
-  return apiClient().patch(`foodit-list/${id}/`, data);
+export const updateuserLogin = (id, data) => {
+  return apiClient().patch(`website-user/${id}/`, data);
 };
-export const deleteFoodITList = (id) => {
-  return apiClient().delete(`foodit-list/${id}/`);
-};
-export const getFoodIT = () => {
-  return apiClient().get("foodit/");
-};
-export const createFoodIT = (data) => {
-  return apiClient().post("foodit/", data);
-};
-export const updateFoodIT = (id, data) => {
-  return apiClient().patch(`foodit/${id}/`, data);
+export const deleteuserLogin = (id) => {
+  return apiClient().delete(`website-user/${id}/`);
 };
 
-// FOODIT USER TYPE
+// WebPortal
+export const getWebPortal = () => {
+  return apiClient().get("website/");
+};
+export const createWebPortal = (data) => {
+  return apiClient().post("website/", data);
+};
+export const updateWebPortal = (id, data) => {
+  return apiClient().patch(`website/${id}/`, data);
+};
+
+export const deleteWebPortal = (id) => {
+  return apiClient().delete(`website/${id}/`);
+};
+
+// USER TYPE
 export const getUserType = () => {
   return apiClient().get("user-type/");
 };
