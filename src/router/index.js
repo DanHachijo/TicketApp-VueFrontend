@@ -20,9 +20,10 @@ import WebPortal from "@/views/admin-views/tech/WebPortal.vue";
 import UserLoginList from "@/views/admin-views/tech/UserLoginList.vue";
 import Manual from "@/views/admin-views/tech/Manual.vue";
 import Ticket from "@/views/admin-views/tech/Ticket.vue";
-import SystemGuide from "@/views/admin-views/tech/SystemGuide.vue";
 import TeamViewer from "@/views/admin-views/tech/TeamViewer.vue";
 import Device from "@/views/admin-views/tech/Device.vue";
+// SystemGuide
+import SystemGuide from "@/views/admin-views/tech/SystemGuide.vue";
 // Login
 import LoginView from "@/views/LoginView.vue";
 
@@ -127,12 +128,12 @@ const routes = [
         component: Ticket,
         meta: { requiresAuth: true },
       },
-      {
-        path: "/system-guide",
-        name: "SystemGuide",
-        component: SystemGuide,
-        meta: { requiresAuth: true },
-      },
+      // {
+      //   path: "/system-guide",
+      //   name: "SystemGuide",
+      //   component: SystemGuide,
+      //   meta: { requiresAuth: true },
+      // },
       {
         path: "/teamviewer",
         name: "TeamViewer",
@@ -145,9 +146,15 @@ const routes = [
         component: Device,
         meta: { requiresAuth: true },
       },
+      // SystemGuide
+      {
+        path: "system-guide/:companyId/:storeId",
+        name: "system-guide",
+        component: SystemGuide,
+        meta: { requiresAuth: true },
+      },
     ],
   },
-
 ];
 const router = createRouter({
   history: createWebHistory(),

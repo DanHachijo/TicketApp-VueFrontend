@@ -20,7 +20,7 @@ true
         <label :class="formLabelClass" class="flex">Store Name</label>
         <Dropdown
           v-model="formState.store"
-          :options="storePinia.storeList"
+          :options="storePinia.data"
           optionLabel="name"
           optionValue="id"
           placeholder="Select a Store"
@@ -121,7 +121,7 @@ true
           v-if="formConfig.okBtn"
           :label="formConfig.okBtn"
           icon="pi pi-check"
-          @click="okClick(formMode, tvPinia)"
+          @click="okClick(formMode)"
           :class="formConfig.okBtnClass"
         />
       </template>
@@ -134,7 +134,8 @@ import ReadOnlyBadge from "@/components/layout-ui/badge/ReadOnlyBadge.vue";
 import { ref, reactive, computed } from "vue";
 import moment from "moment";
 import { useStoreStore } from "@/stores/customers/store";
-import { useTvStore } from "@/stores/tech/teamviewer";
+// import { useTvStore } from "@/stores/tech/teamviewer";
+import { useDeviceStore } from "@/stores/tech/device";
 
 import {
   formLabelClass,
@@ -147,7 +148,8 @@ import {
 } from "@/plugins/GlobalSetting";
 
 const storePinia = useStoreStore();
-const tvPinia = useTvStore();
+const devicePinia = useDeviceStore();
+// const tvPinia = useTvStore();
 
 const formMode = ref("");
 const defaultInput = ref(null);
@@ -174,7 +176,7 @@ const changeFormMode = () => {
   switch (formMode.value) {
     case "create":
       formConfig.value = createForm;
-      okClick.value = () => tvPinia.createData(formState, closeModal);
+      okClick.value = () => devicePinia.createData(formState, closeModal);
       break;
     case "view":
       formConfig.value = viewForm;
@@ -182,12 +184,12 @@ const changeFormMode = () => {
     case "edit":
       formConfig.value = editForm;
       okClick.value = () =>
-        tvPinia.updateData(formState, defaultInput.value.id, closeModal);
+        devicePinia.updateData(formState, defaultInput.value.id, closeModal);
       break;
     case "erase":
       formConfig.value = eraseForm;
       okClick.value = () =>
-        tvPinia.deleteData(defaultInput.value.id, closeModal);
+        devicePinia.deleteData(defaultInput.value.id, closeModal);
       break;
     default:
       console.log("changeFormMode is not getting the formMode.value");

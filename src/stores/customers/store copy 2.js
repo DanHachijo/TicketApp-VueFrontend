@@ -5,15 +5,19 @@ import {
   updateStore,
   createStore,
   deleteStore,
-  getCompanyListEvent,
+  // getStoreListEvent,
 } from "@/plugins/EventService";
 import { useToast } from "primevue/usetoast";
+
+import { inject } from "vue";
 
 export const useStoreStore = defineStore("store", () => {
   const toast = useToast();
   const data = ref(null);
   const loading = ref(true);
-  const storeList = ref([]);
+  const storeId = inject("storeId");
+
+  // const storeList = ref([]);
 
   // const companyList = ref([]);
 
@@ -35,8 +39,31 @@ export const useStoreStore = defineStore("store", () => {
     });
   };
 
+
+
+  if (storeId) {
+    EventService.getStore(storeId)
+    .then((response) => {
+      storeList.value = new Array(response.data);
+    })
+    .catch((error) => {
+      console.log("storeList:" + error);
+    });
+  } else {
+    EventService.getStore()
+    .then((response) => {
+        storeList.value = response.data;
+    })
+    .catch((error) => {
+      console.log("storeList:" + error);
+    });
+  }
+
+
+
+
   const getData = () => {
-    getStore()
+    getStore(storeId)
       .then((response) => {
         data.value = response.data;
       })
@@ -45,7 +72,6 @@ export const useStoreStore = defineStore("store", () => {
         toastError(error);
       });
     loading.value = true;
-    getCompanyList();
   };
 
   const reloadTable = () => {
@@ -58,7 +84,7 @@ export const useStoreStore = defineStore("store", () => {
       .then((response) => {
         console.log("Store Updated" + response.data);
         getData();
-        closeModal()
+        closeModal();
         toastSuccess("updated");
       })
       .catch((error) => {
@@ -72,7 +98,7 @@ export const useStoreStore = defineStore("store", () => {
       .then((response) => {
         console.log("Store Created" + response.data);
         getData();
-        closeModal()
+        closeModal();
         toastSuccess("created");
       })
       .catch((error) => {
@@ -86,7 +112,7 @@ export const useStoreStore = defineStore("store", () => {
       .then((response) => {
         console.log("Company Deleted" + response.data);
         getData();
-        closeModal()
+        closeModal();
         toastSuccess("deleted");
       })
       .catch((error) => {
@@ -95,28 +121,19 @@ export const useStoreStore = defineStore("store", () => {
       });
   };
 
-  const getCompanyList = () => {
-    getCompanyListEvent()
-      .then((response) => {
-        companyList.value = response.data;
-      })
-      .catch((error) => {
-        console.log("companyList:" + error);
-      });
-    loading.value = true;
-  };
+  // const getStoreList = () => {
+  //   getStoreListEvent()
+  //     .then((response) => {
+  //       storeList.value = response.data;
+  //     })
+  //     .catch((error) => {
+  //       console.log("storeList:" + error);
+  //     });
+  //   loading.value = true;
+  // };
 
-  const getStoreList = () => {
-    getStoreListEvent()
-      .then((response) => {
-        storeList.value = response.data;
-      })
-      .catch((error) => {
-        console.log("storeList:" + error);
-      });
-    loading.value = true;
-  };
-
+  getData();
+  // getStoreList();
   // getCompanyList()
 
   return {
@@ -127,6 +144,8 @@ export const useStoreStore = defineStore("store", () => {
     updateData,
     deleteData,
     reloadTable,
+    // getStoreList,
+    // storeList,
     // getCompanyList,
     // companyList,
   };

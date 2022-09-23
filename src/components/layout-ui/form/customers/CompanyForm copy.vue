@@ -23,12 +23,13 @@
       </div> -->
 
       <div class="flex flex-column">
-        <label :class="formLabelClass">※Company Name</label>
+        <label :class="{ error: v$.name.$errors.length }">※Company Name</label>
         <InputText
           type="text"
           v-model="formState.name"
           :readonly="formConfig.isReadyOnly"
         />
+        <div class="error-msg">Enter Company Name</div>
 
         <!-- <p class="invalid-form text-xs" v-show="!formValidation.name.check">
           {{ formValidation.name.error }}
@@ -255,6 +256,33 @@ const setForm = () =>
     is_prospect: defaultInput?.value?.is_prospect || false,
   });
 
+// const formValidation = computed(() => {
+//   return reactive({
+//     name: {
+//       check: formState.name,
+//       error: "Please enter a company name",
+//     },
+//     get isValid() {
+//       return Boolean(this.name.check);
+//     },
+//   });
+// });
+
+// const checkForm = () => {
+//   Object.values(formValidation.value);
+// };
+
+
+// const handleSubmit = (isFormValid) => {
+//   submitted.value = true;
+
+//   if (!isFormValid) {
+//     return;
+//   }
+
+//   toggleDialog();
+// };
+
 // const toggleDialog = () => {
 //   showMessage.value = !showMessage.value;
 
@@ -263,17 +291,9 @@ const setForm = () =>
 //   }
 // };
 
-// const handleSubmit = (isFormValid) => {
-//   submitted.value = true;
-//   if (!isFormValid) {
-//     return;
-//   }
-//   okClick(formMode, companyPinia);
-// };
-
-// const rules = {
-//   name: { required }, // Matches state.firstName
-// };
+const rules = {
+  name: { required }, // Matches state.firstName
+};
 
 // const v$ = useVuelidate(rules, formState);
 

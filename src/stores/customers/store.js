@@ -1,19 +1,24 @@
 import { defineStore } from "pinia";
-import { ref, toRaw } from "vue";
+import { ref, toRaw, inject } from "vue";
 import {
   getStore,
   updateStore,
   createStore,
   deleteStore,
-  getStoreListEvent,
+  // getStoreListEvent,
 } from "@/plugins/EventService";
 import { useToast } from "primevue/usetoast";
+
 
 export const useStoreStore = defineStore("store", () => {
   const toast = useToast();
   const data = ref(null);
+  // const singleData = ref(null);
   const loading = ref(true);
-  const storeList = ref([]);
+  const id = ref()
+
+
+  // const storeList = ref([]);
 
   // const companyList = ref([]);
 
@@ -35,21 +40,26 @@ export const useStoreStore = defineStore("store", () => {
     });
   };
 
-  const getData = () => {
-    getStore()
+
+
+  const getData = (storeId) => {
+    id.value = storeId
+    getStore(storeId)
       .then((response) => {
-        data.value = response.data;
+        storeId
+          ? (data.value = new Array(response.data))
+          : (data.value = response.data);
       })
       .catch((error) => {
         console.log("data:" + error);
         toastError(error);
       });
     loading.value = true;
-    // getCompanyList();
   };
 
+
   const reloadTable = () => {
-    getData();
+    getData(id.value);
     toastSuccess("loaded");
   };
 
@@ -85,29 +95,28 @@ export const useStoreStore = defineStore("store", () => {
     deleteStore(id)
       .then((response) => {
         console.log("Company Deleted" + response.data);
-        getData();
+        getData(id.value);
         closeModal();
         toastSuccess("deleted");
       })
       .catch((error) => {
-        getData();
+        getData(id.value);
         toastError(error);
       });
   };
 
-  const getStoreList = () => {
-    getStoreListEvent()
-      .then((response) => {
-        storeList.value = response.data;
-      })
-      .catch((error) => {
-        console.log("storeList:" + error);
-      });
-    loading.value = true;
-  };
+  // const getStoreList = () => {
+  //   getStoreListEvent()
+  //     .then((response) => {
+  //       storeList.value = response.data;
+  //     })
+  //     .catch((error) => {
+  //       console.log("storeList:" + error);
+  //     });
+  //   loading.value = true;
+  // };
 
-  getData();
-  getStoreList();
+  // getStoreList();
   // getCompanyList()
 
   return {
@@ -118,8 +127,10 @@ export const useStoreStore = defineStore("store", () => {
     updateData,
     deleteData,
     reloadTable,
-    getStoreList,
-    storeList,
+    // getSingleData,
+    // singleData,
+    // getStoreList,
+    // storeList,
     // getCompanyList,
     // companyList,
   };

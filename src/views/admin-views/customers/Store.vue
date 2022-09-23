@@ -1,4 +1,7 @@
 <template>
+  <!-- {{ storePinia.data }} -->
+
+  <!-- store {{ storeId }} -->
   <GlobalDataTable
     :data="storePinia.data"
     :reloadTable="storePinia.reloadTable"
@@ -8,6 +11,8 @@
     @emitEdit="editForm"
     @emitDelete="deleteForm"
     tableName="store"
+    :isHideCreate="props.storeId"
+    :isHideOption="props.storeId"
   >
     <template #column>
       <Column field="company.name" header="Company Name" :sortable="true">
@@ -21,6 +26,16 @@
         </template>
       </Column>
       <Column field="name" header="Name" :sortable="true">
+        <template #body="{ data }">
+          <router-link
+            v-if="!storeId"
+            :to="`/system-guide/${data?.company?.id}/${data?.id}`"
+          >
+            {{ data?.name }}
+          </router-link>
+          <span v-else>{{ data?.name }}</span>
+        </template>
+
         <template #filter="{ filterModel }">
           <InputText
             type="text"
@@ -132,7 +147,7 @@
     </template>
   </GlobalDataTable>
 
-  <StoreForm ref="refForm" />
+  <StoreForm ref="refForm" :isHideOption="props.storeId" />
 </template>
 
 <script setup>
@@ -143,8 +158,10 @@ import { useStoreStore } from "@/stores/customers/store";
 import StoreForm from "@/components/layout-ui/form/customers/StoreForm.vue";
 import { showElipsis } from "@/plugins/GlobalSetting";
 
+const props = defineProps(["storeId"]);
 const storePinia = useStoreStore();
-storePinia.getData();
+// storePinia.getData();
+storePinia.getData(props.storeId);
 
 const refForm = ref(null);
 const defaultInput = ref(null);

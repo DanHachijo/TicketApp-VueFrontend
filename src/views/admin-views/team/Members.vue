@@ -4,6 +4,7 @@
     :reloadTable="memberPinia.reloadTable"
     tableName="member"
     :isHideOption="true"
+    :isHideCreate="true"
   >
     <template #column>
       <Column field="user_name" header="User Name" :sortable="true"></Column>

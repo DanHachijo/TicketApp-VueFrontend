@@ -1,8 +1,8 @@
 <template>
   <GlobalDataTable
-    :data="tvPinia.data"
-    :reloadTable="tvPinia.reloadTable"
-    :key="tvPinia.data"
+    :data="devicePinia.tvData"
+    :reloadTable="devicePinia.reloadTvTable"
+    :key="devicePinia.tvData"
     @emitCreate="createForm"
     @emitView="viewForm"
     @emitEdit="editForm"
@@ -98,14 +98,17 @@
 <script setup>
 import { ref } from "vue";
 import GlobalDataTable from "@/components/layout-ui/table/GlobalDataTable.vue";
-import { useTvStore } from "@/stores/tech/teamviewer";
+// import { useTvStore } from "@/stores/tech/teamviewer";
+import { useDeviceStore } from "@/stores/tech/device";
 
 import TeamViewerForm from "@/components/layout-ui/form/tech/TeamViewerForm.vue";
 import { showElipsis } from "@/plugins/GlobalSetting";
 import moment from "moment";
 
-const tvPinia = useTvStore();
+// const tvPinia = useTvStore();
 // tvPinia.reloadTable();
+const devicePinia = useDeviceStore();
+
 
 const refForm = ref(null);
 const defaultInput = ref(null);

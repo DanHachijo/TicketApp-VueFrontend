@@ -8,6 +8,8 @@
     @emitEdit="editForm"
     @emitDelete="deleteForm"
     tableName="company"
+    :isHideCreate="props.companyId"
+     :isHideOption="props.companyId"
   >
     <template #column>
       <Column field="name" header="Name" :sortable="true">
@@ -58,7 +60,12 @@
         </template>
       </Column>
 
-      <Column field="is_prospect" header="Prospect" :sortable="true" dataType="boolean">
+      <Column
+        field="is_prospect"
+        header="Prospect"
+        :sortable="true"
+        dataType="boolean"
+      >
         <template #body="{ data }">
           <Badge v-if="data.is_prospect" value="Target" severity="warning" />
           <Badge v-else value="Not Prospect" severity="success" />
@@ -75,7 +82,12 @@
           </div>
         </template>
       </Column>
-      <Column field="is_active" header="Status" :sortable="true" dataType="boolean">
+      <Column
+        field="is_active"
+        header="Status"
+        :sortable="true"
+        dataType="boolean"
+      >
         <template #body="{ data }">
           <Badge
             v-if="data.is_active"
@@ -104,17 +116,21 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, inject } from "vue";
 import GlobalDataTable from "@/components/layout-ui/table/GlobalDataTable.vue";
 import { useCompanyStore } from "@/stores/customers/company";
 import CompanyForm from "@/components/layout-ui/form/customers/CompanyForm.vue";
 import { showElipsis } from "@/plugins/GlobalSetting";
 
+const props = defineProps(['companyId'])
 const companyPinia = useCompanyStore();
-companyPinia.getData();
+companyPinia.getData(props.companyId);
 
 const refForm = ref(null);
 const defaultInput = ref(null);
+
+
+
 
 const createForm = (data) => refForm.value.openModal(data, "create");
 const viewForm = (data) => refForm.value.openModal(data, "view");

@@ -17,7 +17,7 @@
         <label :class="formLabelClass">※Company Name</label>
         <Dropdown
           v-model="formState.company"
-          :options="companyPinia.companyList"
+          :options="companyPinia.dropdownList"
           optionLabel="name"
           optionValue="id"
           placeholder="Select a Company"
@@ -208,7 +208,7 @@
 
 <script setup>
 import ReadOnlyBadge from "@/components/layout-ui/badge/ReadOnlyBadge.vue";
-import { ref, reactive, computed, watch } from "vue";
+import { ref, reactive, computed, inject } from "vue";
 import { useStoreStore } from "@/stores/customers/store";
 import { useCompanyStore } from "@/stores/customers/company";
 
@@ -222,9 +222,11 @@ import {
   eraseForm,
 } from "@/plugins/GlobalSetting";
 
+// const props = defineProps(["isHideOption"]);
+
 const storePinia = useStoreStore();
 const companyPinia = useCompanyStore();
-companyPinia.getCompanyList();
+companyPinia.getDropdownList();
 
 const formMode = ref("");
 const defaultInput = ref(null);

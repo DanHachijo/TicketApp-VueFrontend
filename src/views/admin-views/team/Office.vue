@@ -5,6 +5,7 @@
     :reloadTable="officePinia.reloadTable"
     tableName="office"
     :isHideOption="true"
+    :isHideCreate="true"
   >
     <template #column>
       <Column field="name" header="Name" :sortable="true"></Column>

@@ -1,4 +1,5 @@
 <template>
+<!-- {{contactPinia.data}} -->
   <GlobalDataTable
     :data="contactPinia.data"
     :reloadTable="contactPinia.reloadTable"
@@ -63,7 +64,7 @@
     </template>
   </GlobalDataTable>
 
-  <ContactForm ref="refForm" />
+  <ContactForm ref="refForm" :storeId="props.storeId"/>
 </template>
 
 <script setup>
@@ -74,8 +75,11 @@ import { useContactStore } from "@/stores/customers/contact";
 import ContactForm from "@/components/layout-ui/form/customers/ContactForm.vue";
 import { showElipsis } from "@/plugins/GlobalSetting";
 
+const props = defineProps(["storeId", "companyId"]);
+
 const contactPinia = useContactStore();
-contactPinia.getData();
+contactPinia.getData(props.storeId, companyId);
+console.log(props.storeId)
 
 const refForm = ref(null);
 const defaultInput = ref(null);

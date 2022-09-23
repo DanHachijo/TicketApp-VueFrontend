@@ -1,138 +1,137 @@
 <template>
-  <span class="p-card-content">
-    <!-- {{isSingleView}} -->
-    <!-- <Card>
-      <template #content> -->
-        <div class="card border-round">
-          <DataTable
-            :value="data"
-            dataKey="data.id"
-            :loading="loading"
-            responsiveLayout="scroll"
-            stripedRows
-            columnResizeMode="expand"
-            showGridlines
-            :resizableColumns="true"
-            :rowHover="true"
-            :rows="25"
-            :paginator="true"
-            paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
-            :rowsPerPageOptions="[25, 50, 100]"
-            currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-            v-model:filters="filters"
-            filterDisplay="menu"
-            ref="dt"
-          >
-            <!-- Table Title and Buttons -->
-            <template #header>
-              <span class="flex justify-content-between flex-wrap">
-                <span class="text-primary text-2xl flex align-items-center">
-                  {{ props.tableName.toUpperCase() }}
-                </span>
-                <span class="flex align-items-center">
-                  <Button
-                    v-if="!props.isHideOption"
-                    class="p-button-sm mx-2"
-                    @click="emitCreate"
-                    icon="pi pi-plus"
-                    v-tooltip.top="'Create a new data'"
-                  ></Button>
-
-                  <Button
-                    icon="pi pi-external-link"
-                    class="mx-2 p-button-sm p-button-info"
-                    @click="exportCSV($event)"
-                    v-tooltip.top="'Download displayed table to CSV file'"
-                  />
-                  <Button
-                    icon="pi pi-replay"
-                    class="mx-2 p-button-sm p-button-secondary"
-                    @click="reloadTable"
-                    v-tooltip.top="'Reload a data'"
-                  />
-
-                  <span class="mx-2 p-input-icon-left">
-                    <i class="pi pi-search" />
-                    <InputText
-                      v-model="filters['global'].value"
-                      placeholder="Search..."
-                    />
-                  </span>
-                  <!-- TESTING -->
-                </span>
+  <!-- <span > -->
+  <Card>
+    <template #content>
+      <div class="card border-round">
+        <DataTable
+          :value="data"
+          dataKey="data.id"
+          :loading="loading"
+          responsiveLayout="scroll"
+          stripedRows
+          columnResizeMode="expand"
+          showGridlines
+          :resizableColumns="true"
+          :rowHover="true"
+          :rows="25"
+          :paginator="!isSingleView"
+          paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
+          :rowsPerPageOptions="[25, 50, 100]"
+          currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+          v-model:filters="filters"
+          filterDisplay="menu"
+          ref="dt"
+        >
+          <!-- Table Title and Buttons -->
+          <template #header>
+            <span class="flex justify-content-between flex-wrap">
+              <span class="text-primary text-2xl flex align-items-center">
+                {{ props.tableName.toUpperCase() }}
               </span>
-              <!-- END Table Title and Buttons -->
-            </template>
-            <!-- Table Culumn and Edit Buttons -->
-            <template #loading>
-              <ProgressSpinner
-                style="width: 50px; height: 50px"
-                strokeWidth="8"
-                fill="var(--surface-ground)"
-                animationDuration=".5s"
-              />
-            </template>
+              <span class="flex align-items-center">
+                <Button
+                  v-if="!isHideCreate"
+                  class="p-button-sm mx-2"
+                  @click="emitCreate"
+                  icon="pi pi-plus"
+                  v-tooltip.top="'Create a new data'"
+                ></Button>
 
-            <Column
-              v-if="!props.isHideOption"
-              :exportable="false"
-              style="min-width: 100px; min-height: 100px"
-            >
-              <template #body="slotProps" class="flex">
-                <ToggleButton
-                  class="p-button-sm m-2 flex"
-                  @click="
-                    resetToggle([slotProps.data.id]);
-                    toggleOption[slotProps.data.id];
-                  "
-                  v-model="isToggle[slotProps.data.id]"
-                  onIcon="pi pi-eye-slash"
-                  offIcon="pi pi-exclamation-circle"
-                  v-tooltip.right="'Options'"
+                <Button
+                  icon="pi pi-external-link"
+                  class="mx-2 p-button-sm p-button-info"
+                  @click="exportCSV($event)"
+                  v-tooltip.top="'Download displayed table to CSV file'"
+                />
+                <Button
+                  icon="pi pi-replay"
+                  class="mx-2 p-button-sm p-button-secondary"
+                  @click="reloadTable"
+                  v-tooltip.top="'Reload a data'"
                 />
 
-                <div
-                  v-if="isToggle[slotProps.data.id]"
-                  class="flex flex-column absolute z-5 fadeinleft animation-duration-100 surface-50 border-round shadow-4 ml-2 p-1"
-                >
-                  <div>
-                    <h4
-                      class="flex align-items-center justify-content-center my-2"
-                    >
-                      Options
-                    </h4>
-                  </div>
-
-                  <Button
-                    label="View"
-                    class="p-button-sm m-2 px-4 p-button-success flex align-items-center justify-content-center"
-                    @click="emitView(slotProps.data, slotProps.data.id)"
-                    icon="pi pi-eye"
+                <span class="mx-2 p-input-icon-left">
+                  <i class="pi pi-search" />
+                  <InputText
+                    v-model="filters['global'].value"
+                    placeholder="Search..."
                   />
+                </span>
+                <!-- TESTING -->
+              </span>
+            </span>
+            <!-- END Table Title and Buttons -->
+          </template>
+          <!-- Table Culumn and Edit Buttons -->
+          <template #loading>
+            <ProgressSpinner
+              style="width: 50px; height: 50px"
+              strokeWidth="8"
+              fill="var(--surface-ground)"
+              animationDuration=".5s"
+            />
+          </template>
 
-                  <Button
-                    label="Edit"
-                    class="p-button-sm m-2 px-4 p-button-warning flex align-items-center justify-content-center"
-                    @click="emitEdit(slotProps.data, slotProps.data.id)"
-                    icon="pi pi-pencil"
-                  />
+          <Column
+            v-if="!props.isHideOption"
+            :exportable="false"
+            style="min-width: 100px; min-height: 100px"
+          >
+            <template #body="slotProps" class="flex">
+              <ToggleButton
+                class="p-button-sm m-2 flex"
+                @click="
+                  resetToggle([slotProps.data.id]);
+                  toggleOption[slotProps.data.id];
+                "
+                v-model="isToggle[slotProps.data.id]"
+                onIcon="pi pi-eye-slash"
+                offIcon="pi pi-exclamation-circle"
+                v-tooltip.right="'Options'"
+              />
 
-                  <Button
-                    label="Delete"
-                    class="p-button-sm m-2 px-4 p-button-danger flex align-items-center justify-content-center"
-                    @click="emitDelete(slotProps.data, slotProps.data.id)"
-                    icon="pi pi-trash"
-                  />
+              <div
+                v-if="isToggle[slotProps.data.id]"
+                class="flex flex-column absolute z-5 fadeinleft animation-duration-100 surface-50 border-round shadow-4 ml-2 p-1"
+              >
+                <div>
+                  <h4
+                    class="flex align-items-center justify-content-center my-2"
+                  >
+                    Options
+                  </h4>
                 </div>
-              </template>
-            </Column>
 
-            <slot name="column"></slot>
-          </DataTable>
-        </div>
-      <!-- </template>
-    </Card> -->
-  </span>
+                <Button
+                  label="View"
+                  class="p-button-sm m-2 px-4 p-button-success flex align-items-center justify-content-center"
+                  @click="emitView(slotProps.data, slotProps.data.id)"
+                  icon="pi pi-eye"
+                />
+
+                <Button
+                  label="Edit"
+                  class="p-button-sm m-2 px-4 p-button-warning flex align-items-center justify-content-center"
+                  @click="emitEdit(slotProps.data, slotProps.data.id)"
+                  icon="pi pi-pencil"
+                />
+
+                <Button
+                  label="Delete"
+                  class="p-button-sm m-2 px-4 p-button-danger flex align-items-center justify-content-center"
+                  @click="emitDelete(slotProps.data, slotProps.data.id)"
+                  icon="pi pi-trash"
+                />
+              </div>
+            </template>
+          </Column>
+
+          <slot name="column"></slot>
+        </DataTable>
+      </div>
+    </template>
+  </Card>
+  <!-- </span> -->
 </template>
 
 <script setup>
@@ -142,7 +141,13 @@ import { inject } from "vue";
 
 const isSingleView = inject("isSingleView");
 
-const props = defineProps(["data", "reloadTable", "tableName", "isHideOption"]);
+const props = defineProps([
+  "data",
+  "reloadTable",
+  "tableName",
+  "isHideOption",
+  "isHideCreate",
+]);
 const loading = computed(() => {
   return props.data ? false : true;
 });
@@ -383,6 +388,10 @@ const userlistFilters = {
   },
 };
 
+const defaultFilters = {
+  global: { value: null, matchMode: FilterMatchMode.CONTAINS },
+};
+
 const filters = ref(null);
 const updateFIlters = (() => {
   switch (props.tableName) {
@@ -391,7 +400,10 @@ const updateFIlters = (() => {
       filters.value = companyFilters;
       break;
     case "store":
-      filters.value = storeFilters;
+      isSingleView
+        ? (filters.value = defaultFilters)
+        : (filters.value = storeFilters);
+        // Not working
       break;
     case "contact":
       filters.value = contactFilters;
@@ -413,9 +425,7 @@ const updateFIlters = (() => {
     // case "office":
     //   filters.value = officeFilters;
     default:
-      filters.value = {
-        global: { value: null, matchMode: FilterMatchMode.CONTAINS },
-      };
+      filters.value = defaultFilters;
       console.log("appying the global filter only");
   }
 })();

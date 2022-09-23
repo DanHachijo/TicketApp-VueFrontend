@@ -5,7 +5,6 @@ import {
   updateCompany,
   createCompany,
   deleteCompany,
-  getCompanyListEvent,
 } from "@/plugins/EventService";
 import { useToast } from "primevue/usetoast";
 
@@ -13,7 +12,8 @@ export const useCompanyStore = defineStore("company", () => {
   const toast = useToast();
   const data = ref(null);
   const loading = ref(true);
-  const companyList = ref([]);
+  const dropdownList = ref();
+  const id = ref();
 
   const toastSuccess = (msg) => {
     toast.add({
@@ -33,10 +33,13 @@ export const useCompanyStore = defineStore("company", () => {
     });
   };
 
-  const getData = () => {
-    getCompany()
+  const getData = (companyId) => {
+    id.value = companyId;
+    getCompany(companyId)
       .then((response) => {
-        data.value = response.data;
+        companyId
+          ? (data.value = new Array(response.data))
+          : (data.value = response.data);
       })
       .catch((error) => {
         console.log("data:" + error);
@@ -45,8 +48,19 @@ export const useCompanyStore = defineStore("company", () => {
     loading.value = true;
   };
 
+  const getDropdownList = () => {
+    getCompany()
+      .then((response) => {
+        dropdownList.value = response.data;
+      })
+      .catch((error) => {
+        console.log("data:" + error);
+        toastError(error);
+      });
+  };
+
   const reloadTable = () => {
-    getData();
+    getData(id.value);
     toastSuccess("loaded");
   };
 
@@ -95,16 +109,16 @@ export const useCompanyStore = defineStore("company", () => {
       });
   };
 
-  const getCompanyList = () => {
-    getCompanyListEvent()
-      .then((response) => {
-        companyList.value = response.data;
-      })
-      .catch((error) => {
-        console.log("companyList:" + error);
-      });
-    loading.value = true;
-  };
+  // const getCompanyList = () => {
+  //   getCompanyListEvent()
+  //     .then((response) => {
+  //       companyList.value = response.data;
+  //     })
+  //     .catch((error) => {
+  //       console.log("companyList:" + error);
+  //     });
+  //   loading.value = true;
+  // };
 
   return {
     data,
@@ -116,7 +130,9 @@ export const useCompanyStore = defineStore("company", () => {
     reloadTable,
     toastSuccess,
     toastError,
-    companyList,
-    getCompanyList,
+    getDropdownList,
+    dropdownList
+    // companyList,
+    // getCompanyList,
   };
 });

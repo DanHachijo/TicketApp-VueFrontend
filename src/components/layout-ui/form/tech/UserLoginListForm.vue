@@ -21,7 +21,7 @@
         <label :class="formLabelClass" class="flex">Store Name</label>
         <Dropdown
           v-model="formState.store"
-          :options="storePinia.storeList"
+          :options="storePinia.data"
           optionLabel="name"
           optionValue="id"
           placeholder="Select a Store"
@@ -142,7 +142,7 @@ import {
 } from "@/plugins/GlobalSetting";
 
 const storePinia = useStoreStore();
-storePinia.getStoreList();
+storePinia.getData();
 
 const webPinia = useWebPortalStore();
 const userPinia = useUserLoginStore();

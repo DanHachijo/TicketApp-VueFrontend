@@ -117,13 +117,13 @@ export const deleteStore = (id) => {
   return apiClient().delete(`store/${id}/`);
 };
 
-export const getStoreListEvent = () => {
-  return apiClient().get("store-list/");
-};
+// export const getStoreListEvent = () => {
+//   return apiClient().get("store-list/");
+// };
 
-export const getCompanyListEvent = () => {
-  return apiClient().get("company-list/");
-};
+// export const getCompanyListEvent = () => {
+//   return apiClient().get("company-list/");
+// };
 
 // Manual
 export const getManualCategories = () => {

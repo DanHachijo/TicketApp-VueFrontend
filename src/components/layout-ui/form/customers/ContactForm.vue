@@ -1,4 +1,5 @@
 <template>
+{{formState}}
   <span>
     <Dialog
       v-model:visible="displayModal"
@@ -31,7 +32,7 @@
 
           <Dropdown
             v-model="formState.company"
-            :options="companyPinia.companyList"
+            :options="companyPinia.data"
             optionLabel="name"
             optionValue="id"
             placeholder="Select a Company"
@@ -54,7 +55,7 @@
 
           <Dropdown
             v-model="formState.store"
-            :options="storePinia.storeList"
+            :options="storePinia.data"
             optionLabel="name"
             optionValue="id"
             placeholder="Select a Store"
@@ -140,7 +141,6 @@
           :label="formConfig.okBtn"
           icon="pi pi-check"
           @click="
-            // closeModal();
             okClick(formMode, storePinia)
           "
           :class="formConfig.okBtnClass"
@@ -167,11 +167,13 @@ import {
   eraseForm,
 } from "@/plugins/GlobalSetting";
 
+const props = defineProps(["storeId"]);
+
 const companyPinia = useCompanyStore();
-companyPinia.getCompanyList();
+companyPinia.getData();
 
 const storePinia = useStoreStore();
-storePinia.getStoreList();
+storePinia.getData();
 
 const contactPinia = useContactStore();
 
@@ -220,9 +222,11 @@ const changeFormMode = () => {
   }
 };
 
+
+
 const initialFormState = {
   company: null,
-  store: null,
+  store: parseInt(props?.storeId, 10),
   contact: "",
   title: "",
   phone: "",
@@ -239,7 +243,7 @@ const resetForm = () => Object.assign(formState, initialFormState);
 const setForm = () =>
   Object.assign(formState, {
     company: defaultInput?.value?.company?.id || null,
-    store: defaultInput?.value?.store?.id || null,
+    store: defaultInput?.value?.store?.id || "",
     contact: defaultInput?.value?.contact || "",
     title: defaultInput?.value?.title || "",
     phone: defaultInput?.value?.phone || "",

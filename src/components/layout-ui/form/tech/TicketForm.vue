@@ -63,7 +63,7 @@
           <label :class="formLabelClass" class="flex">Company Name</label>
           <Dropdown
             v-model="formState.company"
-            :options="companyPinia.companyList"
+            :options="companyPinia.data"
             optionLabel="name"
             optionValue="id"
             placeholder="Select a Company"
@@ -87,7 +87,7 @@
           <label :class="formLabelClass" class="flex">Store Name</label>
           <Dropdown
             v-model="formState.store"
-            :options="storePinia.storeList"
+            :options="storePinia.data"
             optionLabel="name"
             optionValue="id"
             placeholder="Select a Store"
@@ -451,10 +451,10 @@ import {
 } from "@/plugins/GlobalSetting";
 
 const companyPinia = useCompanyStore();
-companyPinia.getCompanyList();
+companyPinia.getData();
 
 const storePinia = useStoreStore();
-storePinia.getStoreList();
+storePinia.getData();
 
 const contactPinia = useContactStore();
 contactPinia.getData();

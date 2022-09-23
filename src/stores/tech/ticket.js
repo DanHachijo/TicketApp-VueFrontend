@@ -15,6 +15,7 @@ export const useTicketStore = defineStore("ticket", () => {
   const data = ref(null);
   const loading = ref(true);
   const ticketCateogries = ref([]);
+  const id = ref()
 
   const toastSuccess = (msg) => {
     toast.add({
@@ -34,10 +35,14 @@ export const useTicketStore = defineStore("ticket", () => {
     });
   };
 
-  const getData = () => {
-    getTickets()
+  const getData = (storeId) => {
+    id.value = storeId
+    getTickets(storeId)
       .then((response) => {
         data.value = response.data;
+        // storeId
+        //   ? (data.value = new Array(response.data))
+        //   : (data.value = response.data);
       })
       .catch((error) => {
         toastError(error);
@@ -46,7 +51,7 @@ export const useTicketStore = defineStore("ticket", () => {
   };
 
   const reloadTable = () => {
-    getData();
+    getData(id.value);
     toastSuccess("loaded");
   };
 
@@ -54,13 +59,13 @@ export const useTicketStore = defineStore("ticket", () => {
     updateTicket(id, toRaw(formState))
       .then((response) => {
         console.log("Ticket Updated" + response.data);
-        getData();
+        getData(id.value);
         closeModal();
         toastSuccess("updated");
       })
       .catch((error) => {
         console.log(error);
-        getData();
+        getData(id.value);
         toastError(error);
       });
   };
@@ -69,13 +74,13 @@ export const useTicketStore = defineStore("ticket", () => {
     createTicket(toRaw(formState))
       .then((response) => {
         console.log("Contact Updated" + response.data);
-        getData();
+        getData(id.value);
         closeModal();
         toastSuccess("created");
       })
       .catch((error) => {
         console.log(error);
-        getData();
+        // getData(id.value);
         toastError(error);
       });
   };
@@ -84,13 +89,13 @@ export const useTicketStore = defineStore("ticket", () => {
     deleteTicket(id)
       .then((response) => {
         console.log("Ticket Deleted" + response.data);
-        getData();
+        getData(id.value);
         closeModal();
         toastSuccess("deleted");
       })
       .catch((error) => {
         console.log(error);
-        getData();
+        // getData(id.value);
         toastError(error);
       });
   };
@@ -101,7 +106,7 @@ export const useTicketStore = defineStore("ticket", () => {
         ticketCateogries.value = response.data;
       })
       .catch((error) => {
-        console.log("storeList:" + error);
+        console.log("TicketCategory:" + error);
       });
     loading.value = true;
   };

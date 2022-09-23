@@ -2,17 +2,20 @@ import { defineStore } from "pinia";
 import { ref, toRaw } from "vue";
 import {
   getDevice,
+  getTv,
   createDevice,
   updateDevice,
   deleteDevice,
 } from "@/plugins/EventService";
 import { useToast } from "primevue/usetoast";
 
-
 export const useDeviceStore = defineStore("device", () => {
   const toast = useToast();
   const data = ref(null);
   const loading = ref(true);
+
+  // TV
+  const tvData = ref(null);
 
   const toastSuccess = (msg) => {
     toast.add({
@@ -41,10 +44,26 @@ export const useDeviceStore = defineStore("device", () => {
         toastError(error);
       });
   };
-  getData()
+  getData();
 
   const reloadTable = () => {
     getData();
+    toastSuccess("loaded");
+  };
+
+  const getTvData = () => {
+    getTv()
+      .then((response) => {
+        tvData.value = response.data;
+      })
+      .catch((error) => {
+        toastError(error);
+      });
+  };
+  getTvData();
+
+  const reloadTvTable = () => {
+    getTvData();
     toastSuccess("loaded");
   };
 
@@ -53,6 +72,7 @@ export const useDeviceStore = defineStore("device", () => {
       .then((response) => {
         console.log("Device Updated" + response.data);
         getData();
+        getTvData();
         closeModal();
         toastSuccess("updated");
       })
@@ -68,6 +88,7 @@ export const useDeviceStore = defineStore("device", () => {
       .then((response) => {
         console.log("Contact Updated" + response.data);
         getData();
+        getTvData();
         closeModal();
         toastSuccess("created");
       })
@@ -83,6 +104,7 @@ export const useDeviceStore = defineStore("device", () => {
       .then((response) => {
         console.log("Ticket Deleted" + response.data);
         getData();
+        getTvData()
         closeModal();
         toastSuccess("deleted");
       })
@@ -103,5 +125,9 @@ export const useDeviceStore = defineStore("device", () => {
     reloadTable,
     toastSuccess,
     toastError,
+    // TV
+    getTvData,
+    tvData,
+    reloadTvTable,
   };
 });
