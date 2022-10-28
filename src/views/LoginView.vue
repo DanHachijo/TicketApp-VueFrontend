@@ -6,7 +6,7 @@
       <Card @keyup.enter="submitLogin">
         <template #title>
           <span
-            class="flex justify-content-center flex-wrap card-container yellow-container"
+            class="flex justify-content-center flex-wrap card-container"
           >
             Login to the App
           </span>
@@ -28,45 +28,34 @@
               @click="submitLogin"
             />
           </div>
+          <div class="mt-5">
+            <div>
+              User: max@django.com
+            </div>
+            <div>
+              PW: 64Rjyb''u!SHc5x
+            </div>
+          </div>
+          <div class="mt-2">
+            <div>
+              User: Mochi@mochimochi.com
+            </div>
+            <div>
+              PW: E)VELXdjJKZa=lG
+            </div>
+          </div>
         </template>
       </Card>
     </div>
   </div>
-  <!-- <div class="">
-    <div class="card">
-      <div
-        class="flex flex-row flex-wrap align-items-center justify-content-center min-h-screen"
-      >
-        <div
-          class="h-6rem border-round bg-yellow-500 text-gray-900 font-bold p-3 m-3 flex align-items-center justify-content-center"
-        >
-          h-6rem
-        </div>
-        <div
-          class="h-11rem border-round bg-yellow-500 text-gray-900 font-bold p-3 m-3 flex align-items-center justify-content-center"
-        >
-          h-11rem
-        </div>
-        <div
-          class="h-20rem border-round bg-yellow-500 text-gray-900 font-bold p-3 m-3 flex align-items-center justify-content-center"
-        >
-          h-20rem
-        </div>
-        <div
-          class="h-24rem border-round bg-yellow-500 text-gray-900 font-bold p-3 m-3 flex align-items-center justify-content-center"
-        >
-          h-24rem
-        </div>
-      </div>
-    </div>
-  </div> -->
+
 </template>
 
 <script setup>
-import { reactive, ref, toRaw } from "vue";
+import { reactive } from "vue";
 import { useUserStore } from "@/stores/members/user";
-// import EventService from "@/plugins/EventService.js";
-// import router from "@/router";
+
+
 
 const formState = reactive({
   username: "",

@@ -8,8 +8,6 @@
     @emitEdit="editForm"
     @emitDelete="deleteForm"
     tableName="company"
-    :isHideCreate="props.companyId"
-     :isHideOption="props.companyId"
   >
     <template #column>
       <Column field="name" header="Name" :sortable="true">

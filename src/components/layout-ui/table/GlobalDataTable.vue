@@ -1,7 +1,5 @@
 <template>
-  <!-- <span > -->
-  <Card>
-    <template #content>
+
       <div class="card border-round">
         <DataTable
           :value="data"
@@ -129,9 +127,7 @@
           <slot name="column"></slot>
         </DataTable>
       </div>
-    </template>
-  </Card>
-  <!-- </span> -->
+
 </template>
 
 <script setup>

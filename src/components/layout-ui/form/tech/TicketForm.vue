@@ -51,39 +51,9 @@
           <label for="open">Open</label>
         </div>
 
-        <label :class="formLabelClass">Select a contact type</label>
-        <SelectButton
-          v-model="contactType.value"
-          :options="contactOptions"
-          @change="resetContactType"
-          :disabled="formConfig.isReadyOnly"
-        />
 
-        <span v-if="contactType.value == 'Company or Head Office'">
-          <label :class="formLabelClass" class="flex">Company Name</label>
-          <Dropdown
-            v-model="formState.company"
-            :options="companyPinia.data"
-            optionLabel="name"
-            optionValue="id"
-            placeholder="Select a Company"
-            class="flex"
-            :disabled="formConfig.isReadyOnly"
-          >
-            <template #option="slotProps">
-              {{ slotProps.option.name }}
-              <Badge
-                v-if="slotProps.option?.state"
-                :value="slotProps.option?.state"
-                severity="info"
-                class="m-2"
-              ></Badge>
-            </template>
-          </Dropdown>
-          <!-- {{ formState.company }} -->
-        </span>
 
-        <span v-if="contactType.value == 'Store'">
+
           <label :class="formLabelClass" class="flex">Store Name</label>
           <Dropdown
             v-model="formState.store"
@@ -112,138 +82,7 @@
               ></Badge>
             </template>
           </Dropdown>
-        </span>
 
-        <!-- is_contact -->
-        <label :class="formLabelClass" class="flex"
-          >Is cusomter registerd?</label
-        >
-        <div class="field-radiobutton">
-          <RadioButton
-            :value="true"
-            v-model="formState.is_contact"
-            :disabled="formConfig.isReadyOnly"
-          />
-          <label>Use Contact List</label>
-        </div>
-
-        <div class="field-radiobutton">
-          <RadioButton
-            :value="false"
-            v-model="formState.is_contact"
-            :disabled="formConfig.isReadyOnly"
-          />
-          <label>No, type contact info manually</label>
-        </div>
-
-        <!-- is_email -->
-        <label :class="formLabelClass" class="flex"
-          >Select the contact method</label
-        >
-        <div class="field-radiobutton">
-          <RadioButton
-            :value="false"
-            v-model="formState.is_email"
-            :disabled="formConfig.isReadyOnly"
-            id="phone"
-          />
-          <label for="phone">Phone</label>
-        </div>
-        <div class="field-radiobutton">
-          <RadioButton
-            :value="true"
-            v-model="formState.is_email"
-            :disabled="formConfig.isReadyOnly"
-            id="email"
-          />
-          <label for="email">Email</label>
-        </div>
-
-        <!-- !is_contact -->
-        <span v-if="!formState.is_contact" class="flex flex-column">
-          <label :class="formLabelClass">Contact Name</label>
-          <InputText
-            type="text"
-            v-model="formState.contact_name"
-            :readonly="formConfig.isReadyOnly"
-          />
-
-          <span v-if="formState.is_email" class="flex flex-column">
-            <label :class="formLabelClass">Email</label>
-            <InputText
-              type="text"
-              v-model="formState.email"
-              :readonly="formConfig.isReadyOnly"
-            />
-          </span>
-
-          <span v-if="!formState.is_email" class="flex flex-column">
-            <label :class="formLabelClass">Phone</label>
-            <InputText
-              type="text"
-              v-model="formState.phone"
-              :readonly="formConfig.isReadyOnly"
-            />
-          </span>
-        </span>
-
-        <!-- is_contact ? use contact list -->
-        <span v-if="formState.is_contact" class="flex flex-column">
-          <label :class="formLabelClass">Select Contact</label>
-          <!-- {{ contactPinia.data }} -->
-          <Dropdown
-            v-model="formState.contact"
-            :options="contactPinia.data"
-            optionLabel="contact"
-            optionValue="id"
-            placeholder="Select a contact"
-            :disabled="formConfig.isReadyOnly"
-            @change="checkContact()"
-          >
-            <template #option="slotProps">
-              {{ slotProps.option.contact }}
-              <Badge
-                v-if="slotProps.option?.title"
-                :value="slotProps.option?.title"
-                severity="warning"
-                class="m-2"
-              ></Badge>
-              <Badge
-                v-if="slotProps.option?.store?.name"
-                :value="slotProps.option?.store?.name"
-                severity="info"
-                class="m-2"
-              ></Badge>
-            </template>
-          </Dropdown>
-
-          <span v-if="formState.is_email" class="flex flex-column">
-            <label :class="formLabelClass">Email</label>
-            <Dropdown
-              v-model="formState.contact"
-              :options="contactPinia.data"
-              optionLabel="email"
-              optionValue="id"
-              placeholder=""
-              :disabled="true"
-            ></Dropdown>
-          </span>
-
-          <span v-if="!formState.is_email" class="flex flex-column">
-            <label :class="formLabelClass">Phone</label>
-
-            <Dropdown
-              v-model="formState.contact"
-              :options="contactPinia.data"
-              optionLabel="phone"
-              optionValue="id"
-              placeholder=""
-              :disabled="true"
-            ></Dropdown>
-          </span>
-
-          <!-- END AUTO SELECT CONTACT -->
-        </span>
 
         <label :class="formLabelClass" class="flex">Ticket Category</label>
         <Dropdown
@@ -255,15 +94,7 @@
           class="flex"
           :disabled="formConfig.isReadyOnly"
         >
-          <!-- <template #option="slotProps">
-            {{ slotProps.option.name }}
-            <Badge
-              v-if="slotProps.option?.state"
-              :value="slotProps.option?.state"
-              severity="info"
-              class="m-2"
-            ></Badge>
-          </template> -->
+
         </Dropdown>
 
         <label class="flex" :class="formLabelClass">Inquiry</label>
@@ -364,51 +195,6 @@
           />
         </span>
 
-        <!-- IS PROGRAM UPDATE -->
-        <label :class="formLabelClass" class="flex">Program update</label>
-
-        <div class="field-radiobutton">
-          <RadioButton
-            :value="false"
-            v-model="formState.is_programupdate"
-            :disabled="formConfig.isReadyOnly"
-            id="isEscalated"
-          />
-          <label for="isEscalated">No. There is no program update</label>
-        </div>
-
-        <div class="field-radiobutton">
-          <RadioButton
-            :value="true"
-            v-model="formState.is_programupdate"
-            :disabled="formConfig.isReadyOnly"
-            id="Escalated"
-          />
-          <label for="Escalated">Yes. There is a program update</label>
-        </div>
-
-        <!-- IS Sales -->
-        <label :class="formLabelClass" class="flex">Sales Inquery</label>
-
-        <div class="field-radiobutton">
-          <RadioButton
-            :value="false"
-            v-model="formState.is_sales"
-            :disabled="formConfig.isReadyOnly"
-            id="isEscalated"
-          />
-          <label for="isEscalated">No. There is no sales</label>
-        </div>
-
-        <div class="field-radiobutton">
-          <RadioButton
-            :value="true"
-            v-model="formState.is_sales"
-            :disabled="formConfig.isReadyOnly"
-            id="Escalated"
-          />
-          <label for="Escalated">Yes. We (will) have a sales project</label>
-        </div>
       </div>
 
       <template #footer>
@@ -436,7 +222,6 @@ import { ref, reactive, computed } from "vue";
 import { useCompanyStore } from "@/stores/customers/company";
 import moment from "moment";
 import { useStoreStore } from "@/stores/customers/store";
-import { useContactStore } from "@/stores/customers/contact";
 import { useMemberStore } from "@/stores/members/member";
 import { useTicketStore } from "@/stores/tech/ticket";
 
@@ -456,8 +241,6 @@ companyPinia.getData();
 const storePinia = useStoreStore();
 storePinia.getData();
 
-const contactPinia = useContactStore();
-contactPinia.getData();
 
 const memberPinia = useMemberStore();
 memberPinia.getData();
@@ -516,19 +299,13 @@ const initialFormState = {
   escalated_to: "",
   contact: "",
   store: "",
-  company: "",
   is_open: false,
-  is_email: false,
   open_details: "",
   inquiry: "",
   respond: "",
   is_escalated: false,
   escalated_res: "",
-  is_programupdate: false,
-  is_sales: false,
-  is_contact: false,
   contact_name: "",
-  email: "",
   phone: "",
 };
 
@@ -542,19 +319,13 @@ const setForm = () =>
     escalated_to: defaultInput?.value?.escalated_to?.id || "",
     contact: defaultInput?.value?.contact?.id || "",
     store: defaultInput?.value?.store?.id || null,
-    company: defaultInput?.value?.company?.id || null,
     is_open: defaultInput?.value?.is_open || false,
-    is_email: defaultInput?.value?.is_email || false,
     open_details: defaultInput?.value?.open_details || "",
     inquiry: defaultInput?.value?.inquiry || "",
     respond: defaultInput?.value?.respond || "",
     is_escalated: defaultInput?.value?.is_escalated || false,
     escalated_res: defaultInput?.value?.escalated_res || "",
-    is_programupdate: defaultInput?.value?.is_programupdate || false,
-    is_sales: defaultInput?.value?.is_sales || false,
-    is_contact: defaultInput?.value?.is_contact || false,
     contact_name: defaultInput?.value?.contact_name || "",
-    email: defaultInput?.value?.email || "",
     phone: defaultInput?.value?.phone || "",
   });
 

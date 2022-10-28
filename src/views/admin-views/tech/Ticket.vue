@@ -19,18 +19,7 @@
         <template #body="{ data }">
           {{ data.ticket_date }}
         </template>
-        <!-- <template #filter="{ filterModel }">
-          {{ filterModel.value }}
-          <Calendar
-            v-model="filterModel.value"
-            :showTime="false"
-            :showSeconds="false"
-            :showButtonBar="true"
-            dateFormat="mm/dd/yy"
-            :showIcon="true"
-            selectionMode="range"
-          />
-        </template> -->
+
       </Column>
 
       <Column field="is_open" header="Complete By" dataType="boolean">
@@ -62,7 +51,7 @@
         </template>
       </Column>
 
-      <Column field="company.name" header="Company Name" :sortable="true">
+      <!-- <Column field="company.name" header="Company Name" :sortable="true">
         <template #filter="{ filterModel }">
           <InputText
             type="text"
@@ -74,9 +63,8 @@
         <template #body="{ data }">
           <div v-if="data.store?.name">{{ data.store?.company?.name }}</div>
           <div v-else-if="data.company?.name">{{ data.company?.name }}</div>
-          <!-- <div v-else>---</div> -->
         </template>
-      </Column>
+      </Column> -->
 
       <Column field="store.name" header="Store Name" :sortable="true">
         <template #body="{ data }"
@@ -93,16 +81,6 @@
         </template>
       </Column>
 
-      <Column header="Contact">
-        <template #body="slotProps">
-          <span v-if="slotProps.data.is_contact">
-            {{ slotProps.data.contact.contact }}
-          </span>
-          <span v-else>
-            {{ slotProps.data.contact_name }}
-          </span>
-        </template>
-      </Column>
 
       <Column field="category.name" header="Ticket Category" :sortable="true">
         <template #filter="{ filterModel }">
@@ -131,8 +109,6 @@
 
       <Column field="respond" header="Respond" :sortable="true">
         <template #body="{ data }">
-          <!-- {{String(data.respond).length}} -->
-          <!-- {{data.respond}} -->
           <span>{{ showElipsis(data.respond) }}</span>
         </template>
         <template #filter="{ filterModel }">
@@ -145,76 +121,7 @@
         </template>
       </Column>
 
-      <Column
-        field="is_email"
-        header="Contact by"
-        :sortable="true"
-        dataType="boolean"
-      >
-        <template #body="{ data }">
-          <Badge v-if="data.is_email" value="Email" severity="success" />
-          <Badge v-else value="Phone" severity="info" />
-        </template>
-
-        <template #filter="{ filterModel }">
-          <div class="field-radiobutton">
-            <RadioButton id="1" value="true" v-model="filterModel.value" />
-            <label for="1">Email</label>
-          </div>
-          <div class="field-radiobutton">
-            <RadioButton id="2" value="false" v-model="filterModel.value" />
-            <label for="2">Phone</label>
-          </div>
-        </template>
-      </Column>
-
-      <Column
-        field="is_programupdate"
-        header="Program Update"
-        :sortable="true"
-        dataType="boolean"
-      >
-        <template #body="{ data }">
-          <Badge
-            v-if="data.is_programupdate"
-            value="Program Update"
-            severity="success"
-          />
-        </template>
-
-        <template #filter="{ filterModel }">
-          <div class="field-radiobutton">
-            <RadioButton id="1" value="true" v-model="filterModel.value" />
-            <label for="1">Program Update</label>
-          </div>
-          <div class="field-radiobutton">
-            <RadioButton id="2" value="false" v-model="filterModel.value" />
-            <label for="2">No Program Update</label>
-          </div>
-        </template>
-      </Column>
-
-      <Column
-        field="is_sales"
-        header="Sales Inquery"
-        :sortable="true"
-        dataType="boolean"
-      >
-        <template #body="{ data }">
-          <Badge v-if="data.is_sales" value="Sales" severity="warning" />
-        </template>
-
-        <template #filter="{ filterModel }">
-          <div class="field-radiobutton">
-            <RadioButton id="1" value="true" v-model="filterModel.value" />
-            <label for="1">Sales</label>
-          </div>
-          <div class="field-radiobutton">
-            <RadioButton id="2" value="false" v-model="filterModel.value" />
-            <label for="2">Not Sales</label>
-          </div>
-        </template>
-      </Column>
+ 
 
       <Column field="created_by.user_name" header="Created By" :sortable="true">
         <template #filter="{ filterModel }">

@@ -1,42 +1,12 @@
 import { ref } from "vue";
-// import { useUserStore } from "@/stores/members/user";
-
-// const userPinia = useUserStore()
 
 const items = ref([
   {
     label: "Dashboard",
     icon: "pi pi-fw pi-chart-line",
-    to: "/",
+    to: "/dashboard",
   },
-  {
-    label: "Sales",
-    icon: "pi pi-fw pi-briefcase",
-    items: [
-      {
-        label: "Project Logs",
-        to: "/project-logs",
-      },
-      {
-        label: "Vendors",
-        to: "/vendors",
-      },
-      {
-        label: "Products",
-        to: "/products",
-      },
-      {
-        label: "Estimates",
-        to: "/estimates",
-      },
-      {
-        separator: true,
-      },
-      {
-        label: "Guide",
-      },
-    ],
-  },
+  
   {
     label: "Tech",
     icon: "pi pi-fw pi-database",
@@ -44,36 +14,6 @@ const items = ref([
       {
         label: "Tickets",
         to: "/ticket",
-      },
-      {
-        label: "System Guide",
-        to: "/system-guide",
-      },
-      {
-        label: "TeamViewer",
-        to: "/teamviewer",
-      },
-      {
-        label: "Device",
-        to: "/device",
-      },
-      {
-        label: "Web Portal",
-        to: "/web-portal",
-      },
-      {
-        label: "Login Info",
-        to: "/user-login-list",
-      },
-      {
-        label: "Manual",
-        to: "/manual",
-      },
-      {
-        separator: true,
-      },
-      {
-        label: "Guide",
       },
     ],
   },
@@ -89,16 +29,10 @@ const items = ref([
         label: "Store",
         to: "/store",
       },
-      {
-        label: "Contact",
-        to: "/contact",
-      },
-      {
-        separator: true,
-      },
-      {
-        label: "Guide",
-      },
+      // {
+      //   label: "Contact",
+      //   to: "/contact",
+      // },
     ],
   },
 

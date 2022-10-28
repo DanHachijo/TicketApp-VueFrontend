@@ -1,7 +1,4 @@
 <template>
-  <!-- {{ storePinia.data }} -->
-
-  <!-- store {{ storeId }} -->
   <GlobalDataTable
     :data="storePinia.data"
     :reloadTable="storePinia.reloadTable"
@@ -11,8 +8,6 @@
     @emitEdit="editForm"
     @emitDelete="deleteForm"
     tableName="store"
-    :isHideCreate="props.storeId"
-    :isHideOption="props.storeId"
   >
     <template #column>
       <Column field="company.name" header="Company Name" :sortable="true">
@@ -26,15 +21,6 @@
         </template>
       </Column>
       <Column field="name" header="Name" :sortable="true">
-        <template #body="{ data }">
-          <router-link
-            v-if="!storeId"
-            :to="`/system-guide/${data?.company?.id}/${data?.id}`"
-          >
-            {{ data?.name }}
-          </router-link>
-          <span v-else>{{ data?.name }}</span>
-        </template>
 
         <template #filter="{ filterModel }">
           <InputText
@@ -45,16 +31,7 @@
           />
         </template>
       </Column>
-      <Column field="japanese_name" header="Japanese Name" :sortable="true">
-        <template #filter="{ filterModel }">
-          <InputText
-            type="text"
-            v-model="filterModel.value"
-            class="p-column-filter"
-            :placeholder="`Search by name - `"
-          />
-        </template>
-      </Column>
+
       <Column field="storeID" header="store ID" :sortable="true"></Column>
       <Column field="phone" header="Phone" :sortable="true"></Column>
 

@@ -12,10 +12,9 @@
   </div>
 
   <div class="m-2">
-    <!-- <Card>
+    <Card>
       <template #content><router-view></router-view></template>
-    </Card> -->
-    <router-view></router-view>
+    </Card>
   </div>
 </template>
 

@@ -25,5 +25,4 @@ import { useMemberStore } from "@/stores/members/member";
 
 const memberPinia = useMemberStore();
 memberPinia.getData();
-// officePinia.getOffice()
 </script>
