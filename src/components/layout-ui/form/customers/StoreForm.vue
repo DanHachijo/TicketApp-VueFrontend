@@ -50,12 +50,6 @@
 
         <label :class="formLabelClass">Japanese Name</label>
 
-        <InputText
-          type="text"
-          v-model="formState.japanese_name"
-          :readonly="formConfig.isReadyOnly"
-        />
-
         <label :class="formLabelClass">store ID</label>
 
         <InputText
