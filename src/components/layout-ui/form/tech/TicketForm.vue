@@ -9,7 +9,7 @@
       <!-- {{ formState }} -->
       <template #header>
         <span class="flex">
-          <h2 class="">{{ formConfig.formHeader }} Tciket</h2>
+          <h2 class="">{{ formConfig.formHeader }} Ticket</h2>
           <ReadOnlyBadge v-if="formConfig.isReadyOnly" />
         </span>
       </template>

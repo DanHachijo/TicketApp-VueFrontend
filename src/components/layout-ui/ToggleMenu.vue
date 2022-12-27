@@ -5,6 +5,7 @@
       @click="toggle"
       aria-haspopup="true"
       aria-controls="overlay_tmenu"
+      class="wobble-hor-bottom"
     ><i class="pi pi-bars"></i></Button>
 
     <TieredMenu id="overlay_tmenu" ref="menu" :model="items" :popup="true">

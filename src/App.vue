@@ -1,6 +1,6 @@
 <template>
   <!-- <LayoutView ></LayoutView> -->
-  <router-view></router-view>
+  <router-view class="content-wrapper"></router-view>
   <Toast position="bottom-left" />
 </template>
 
@@ -50,6 +50,7 @@ body {
   min-height: 100vh;
   text-rendering: optimizeSpeed;
   line-height: 1.5;
+  background-image: linear-gradient(to right top, #051937, #004d7a, #008793, #00bf72, #a8eb12);
 }
 
 /* A elements that don't have a class get default styles */
@@ -86,5 +87,9 @@ select {
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
+}
+
+.content-wrapper{
+  max-width: 1200px;
 }
 </style>
